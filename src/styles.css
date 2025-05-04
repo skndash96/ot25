@@ -1,13 +1,13 @@
 @import "tailwindcss";
 
 @font-face {
-  font-family: 'Glenite';
-  src: url('/fonts/glenite.otf') format('opentype');
+  font-family: 'Equivalent';
+  src: url('/fonts/equivalent-bold.otf') format('opentype');
 }
 
 @font-face {
-  font-family: 'Equivalent';
-  src: url('/fonts/equivalent-bold.otf') format('opentype');
+  font-family: 'Equivalent Bold';
+  src: url('/fonts/equivalent-extrabold.otf') format('opentype');
 }
 
 body {
@@ -25,10 +25,4 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
-}
-
-#hero {
-  background: #060061;
-  background: -webkit-linear-gradient(to bottom, #060061, #7927a5, #fb6fae);
-  background: linear-gradient(to bottom, #060061, #7927a5, #fb6fae);
 }
