@@ -1,77 +1,17 @@
-import { useGSAP } from '@gsap/react'
+import Beginnings from '@/components/beginnings'
+import Hero from '@/components/hero'
 import { createFileRoute } from '@tanstack/react-router'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/all'
 
 export const Route = createFileRoute('/')({
   component: App,
 })
 
 function App() {
-  useGSAP(() => {
-    const tl = gsap.timeline()
-
-    tl.to("#new-beginnings", {
-      width: '50vw',
-      rotate: 4,
-      margin: '0 auto',
-      maxWidth: '100vw',
-    })
-
-    tl.to('#new-beginnings', {
-      scrollTrigger: {
-        trigger: '#new-beginnings',
-        start: 'top 80%',
-        end: 'top 10%',
-        scrub: true,
-        onUpdate: (self) => {
-          gsap.set('#new-beginnings', {
-            maxWidth: '100vw',
-            margin: '0 auto',
-            rotate: `${4 - self.progress * 4}deg`,
-            width: `${50 + self.progress * 50}vw`,
-          })
-        }
-      },
-    })
-
-    ScrollTrigger.create({
-      trigger: '#new-beginnings',
-      start: 'top top',
-      end: 'bottom top',
-      scrub: true,
-      pin: true,
-    })
-  }, [])
-
   return (
     <div className='wrapper'>
-      <div className='min-h-screen flex flex-col'>
-        <header className=''>
-          <div className='ml-4'>
-            <img src="/logo.png" alt="Logo" className='h-12' />
-          </div>
-        </header>
+      <Hero />
 
-        <main className='p-4 pt-20 grow relative flex flex-col md:items-center gap-20'>
-          <h1 className='font-[Equivalent_Bold] text-4xl md:text-7xl lg:text-9xl w-fit mx-auto text-right'>
-            ORIENTATION '25
-          </h1>
-        </main>
-      </div>
-
-      <section id="new-beginnings" className='relative h-screen flex flex-row md:items-start overflow-hidden'>
-        <img src="/concert.jpg" alt="Concert" className='z-[-1] object-cover object-left w-full h-full absolute inset-0' />
-
-        <div className='p-4 shrink-0 basis-full'>
-          <h2 className='font-[Equivalent] text-4xl md:text-7xl'>
-            New Beginnings
-          </h2>
-          <p className='mt-2 max-w-2xl text-base md:text-xl'>
-            Tired of sleepless nights and endless practice? It's time to dive into the excitement! Welcome to NIT Trichy, where Orientation meets Celebration! Kickstart your college journey with fun, friends, and unforgettable memories.
-          </p>
-        </div>
-      </section>
+      <Beginnings />
 
       <section className='p-4 my-10 flex flex-col items-center'>
         <h1 className='font-[Equivalent] text-6xl'>
