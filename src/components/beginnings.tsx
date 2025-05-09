@@ -42,9 +42,8 @@ export default function Beginnings() {
       pin: true,
       onUpdate: (self) => {
         let max = firstItemRef.current!.clientWidth + window.innerWidth
-        let buffer = window.innerWidth*0.2
-        
-        let x = self.progress < 0.05 ? 0 : (self.progress * ( max + buffer))
+
+        let x = self.progress < 0.05 ? 0 : self.progress > 0.9 ? max : (self.progress * max)
 
         gsap.to("#new-beginnings-content", {
           x: `-${x}px`,

@@ -1,10 +1,14 @@
+import Sidebar from "./sidebar";
+
 export default function Hero() {
   return (
-    <div className='min-h-screen flex flex-col'>
-      <header className=''>
+    <div className='min-h-[80vh] flex flex-col'>
+      <header className='flex justify-between items-center'>
         <div className='ml-4'>
           <img src="/logo.png" alt="Logo" className='h-12' />
         </div>
+
+        <Sidebar />
       </header>
 
       <main className='p-4 pt-20 grow relative flex flex-col md:items-center gap-20'>
