@@ -1,19 +1,32 @@
-import React from 'react'
-import './styles.css'
+import './globals.css'
+import type { Metadata } from 'next'
+import { LoadingContextProvider } from './context/LoadingContext'
+import LoadingScreen from '@/app/(frontend)/components/LoadingScreen'
+import Footer from '@/app/(frontend)/components/Footer'
+import { ToastContainer } from 'react-toastify'
+import { AuthProvider } from './context/AuthContext'
 
-export const metadata = {
-  description: 'A blank template using Payload in a Next.js app.',
-  title: 'Payload Blank Template',
+export const metadata: Metadata = {
+  title: 'Orientation 25',
+  description: 'Welcome Freshers to the Orientation 25 website!',
 }
 
-export default async function RootLayout(props: { children: React.ReactNode }) {
-  const { children } = props
-
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode
+}>) {
   return (
     <html lang="en">
-      <body>
-        <main>{children}</main>
-      </body>
+      <AuthProvider>
+        <LoadingContextProvider>
+          <body className="antialiased">
+            <LoadingScreen />
+            <ToastContainer />
+            {children}
+          </body>
+        </LoadingContextProvider>
+      </AuthProvider>
     </html>
   )
 }
