@@ -1,10 +1,9 @@
 import './globals.css'
 import type { Metadata } from 'next'
-import { LoadingContextProvider } from './context/LoadingContext'
-import LoadingScreen from '@/app/(frontend)/components/LoadingScreen'
-import Footer from '@/app/(frontend)/components/Footer'
+import { LoadingContextProvider } from '../../client/context/LoadingContext'
+import LoadingScreen from '@/client/components/LoadingScreen'
 import { ToastContainer } from 'react-toastify'
-import { AuthProvider } from './context/AuthContext'
+import { AuthProvider } from '../../client/context/AuthContext'
 
 export const metadata: Metadata = {
   title: 'Orientation 25',

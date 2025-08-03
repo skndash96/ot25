@@ -1,10 +1,10 @@
-import About from '@/app/(frontend)/components/About'
-import Core from '@/app/(frontend)/components/Core'
-import Events from '@/app/(frontend)/components/Events'
-import Experience from '@/app/(frontend)/components/Experience'
-import Header from '@/app/(frontend)/components/Header'
-import Hero from '@/app/(frontend)/components/Hero'
-import Footer from './components/Footer'
+import About from '@/client/components/About'
+import Core from '@/client/components/Core'
+import Events from '@/client/components/Events'
+import Experience from '@/client/components/Experience'
+import Header from '@/client/components/Header'
+import Hero from '@/client/components/Hero'
+import Footer from '@/client/components/Footer'
 
 export default function Home() {
   return (
