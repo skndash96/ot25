@@ -1,14 +1,18 @@
 "use client"
-import { useAuth } from '@/context/AuthContext'
-import { logout } from '@/services/login'
-import { updateStudent } from '@/services/student'
-import { departments } from '@/utils/departments'
+import { departments } from '@/client/utils/departments'
+import { signOut, useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { toast } from 'react-toastify'
+import { updateProfile } from './action'
 
 export default function CompleteProfile() {
-  const { firebaseUser, user } = useAuth()
+  const { data: session, update: updateSession  } = useSession()
+  const user = useMemo(() => session?.user, [session])
+  const isComplete = useMemo(() => {
+    return user?.rollNumber && user?.rollNumber.length > 1
+  }, [user])
+
   const router = useRouter()
 
   // States
@@ -21,12 +25,13 @@ export default function CompleteProfile() {
   const [loggingOut, setLoggingOut] = useState(false)
 
   useEffect(() => {
-    if (name === "") setName(firebaseUser?.displayName || user?.name || "")
+    const user = session?.user
+    if (name === "") setName(user?.name || "")
     if (gender === "") setGender(user?.gender || "")
     if (department === "") setDepartment(user?.department || "")
-    if (rollNumber === "") setRollNumber(user?.rollNo || "")
+    if (rollNumber === "") setRollNumber(user?.rollNumber || "")
     if (phoneNumber === "") setPhoneNumber(user?.phoneNumber || "")
-  }, [firebaseUser, user])
+  }, [session])
 
   const [errors, setErrors] = useState<Record<string, string>>({})
 
@@ -47,18 +52,24 @@ export default function CompleteProfile() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    if (!firebaseUser) return
+    if (!user) return
     if (!validate()) return
 
     try {
       setIsLoading(true)
 
-      await updateStudent(firebaseUser!.uid, {
-        name, phoneNumber, gender: gender as "MALE" | "FEMALE" | "OTHER", rollNo: rollNumber, department: department as typeof departments[number]
+      await updateProfile({
+        name,
+        phoneNumber,
+        gender: gender as "MALE" | "FEMALE" | "OTHER",
+        rollNumber,
+        department: department as typeof departments[number]
       })
 
+      await updateSession()
+
       toast.success("Profile updated successfully!")
-      router.push('/')
+      router.push('/profile')
     } catch (e) {
       console.error("Failed to update profile:", e)
       toast.error("Failed to update profile. Please try again.")
@@ -70,7 +81,7 @@ export default function CompleteProfile() {
   const handleLogout = async () => {
     setLoggingOut(true)
     try {
-      await logout()
+      await signOut()
     } catch (error) {
       console.error("Logout failed:", error)
     } finally {
@@ -81,9 +92,9 @@ export default function CompleteProfile() {
   return (
     <div className='max-w-2xl mx-auto'>
       <form onSubmit={handleSubmit} className='p-6 space-y-4'>
-        <h1 className='text-2xl font-bold text-amber-400'>{user ? "Update" : "Complete"} Your Profile</h1>
+        <h1 className='text-2xl font-bold text-amber-400'>{isComplete ? "Update" : "Complete"} Your Profile</h1>
 
-        {!user && (
+        {!isComplete && (
           <p className='-mt-2 text-sm text-amber-200/80'>
             Please fill out the following information to complete your profile.
           </p>
@@ -166,7 +177,7 @@ export default function CompleteProfile() {
         </div>
 
         <button
-          disabled={isLoading || !firebaseUser}
+          disabled={isLoading || !user}
           type='submit'
           className='w-full px-4 py-2 bg-amber-500 hover:bg-amber-600 text-black font-semibold rounded-md transition'
         >
@@ -178,7 +189,7 @@ export default function CompleteProfile() {
         type="button"
         className='-mt-2 underline text-sm w-fit ml-auto block mr-6'
         onClick={handleLogout}
-        disabled={isLoading || !firebaseUser}
+        disabled={isLoading || !user}
       >
         {loggingOut ? "Logging out..." : "Logout"}
       </button>

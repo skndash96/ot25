@@ -3,7 +3,7 @@ import type { Metadata } from 'next'
 import { LoadingContextProvider } from '../../client/context/LoadingContext'
 import LoadingScreen from '@/client/components/LoadingScreen'
 import { ToastContainer } from 'react-toastify'
-import { AuthProvider } from '../../client/context/AuthContext'
+import { SessionProvider } from 'next-auth/react'
 
 export const metadata: Metadata = {
   title: 'Orientation 25',
@@ -17,15 +17,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <AuthProvider>
-        <LoadingContextProvider>
-          <body className="antialiased">
-            <LoadingScreen />
-            <ToastContainer />
-            {children}
-          </body>
-        </LoadingContextProvider>
-      </AuthProvider>
+      <SessionProvider>
+          <LoadingContextProvider>
+            <body className="antialiased">
+              <LoadingScreen />
+              <ToastContainer />
+              {children}
+            </body>
+          </LoadingContextProvider>
+      </SessionProvider>
     </html>
   )
 }

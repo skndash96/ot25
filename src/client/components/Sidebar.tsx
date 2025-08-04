@@ -2,9 +2,9 @@
 import gsap from "gsap"
 import { useGSAP } from "@gsap/react"
 import { useRef } from "react"
-import { useAuth } from "../context/AuthContext"
 import Link from "next/link"
 import { menuItems } from "../utils/menu"
+import { useSession } from "next-auth/react"
 
 export default function Sidebar({
   isOpen,
@@ -13,7 +13,7 @@ export default function Sidebar({
   isOpen: boolean
   setIsOpen: (isOpen: boolean) => void
 }) {
-  const { isAuthenticated } = useAuth()
+  const { status } = useSession()
   const c1Ref = useRef<HTMLDivElement>(null)
   const c2Ref = useRef<HTMLDivElement>(null)
   const c3Ref = useRef<HTMLDivElement>(null)
@@ -73,7 +73,7 @@ export default function Sidebar({
                 </li>
               ))}
 
-              {isAuthenticated ? (
+              {status === "authenticated" ? (
                 <li>
                   <Link className="hover:text-amber-500 hover:underline" href="/profile" onClick={() => setIsOpen(false)}>
                     Student Profile
