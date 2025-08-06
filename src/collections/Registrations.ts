@@ -10,7 +10,7 @@ const restrictOtherUsers : Access = ({ req, id }) => {
 export const Registrations: CollectionConfig = {
   slug: 'registrations',
   access: {
-    read: restrictOtherUsers,
+    read: () => true,
     update: restrictOtherUsers,
     delete: restrictOtherUsers,
     create: restrictOtherUsers,
@@ -26,6 +26,9 @@ export const Registrations: CollectionConfig = {
       type: 'relationship',
       relationTo: 'users',
       required: true,
+      access: {
+        read: ({ req }) => req.user?.collection === 'admins',
+      }
     },
     {
       name: 'createdAt',
@@ -35,5 +38,5 @@ export const Registrations: CollectionConfig = {
         readOnly: true,
       },
     },
-  ],
+  ]
 }

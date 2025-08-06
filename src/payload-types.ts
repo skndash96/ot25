@@ -64,7 +64,6 @@ export type SupportedTimezones =
 export interface Config {
   auth: {
     admins: AdminAuthOperations;
-    users: UserAuthOperations;
   };
   blocks: {};
   collections: {
@@ -98,37 +97,15 @@ export interface Config {
   globals: {};
   globalsSelect: {};
   locale: null;
-  user:
-    | (Admin & {
-        collection: 'admins';
-      })
-    | (User & {
-        collection: 'users';
-      });
+  user: Admin & {
+    collection: 'admins';
+  };
   jobs: {
     tasks: unknown;
     workflows: unknown;
   };
 }
 export interface AdminAuthOperations {
-  forgotPassword: {
-    email: string;
-    password: string;
-  };
-  login: {
-    email: string;
-    password: string;
-  };
-  registerFirstUser: {
-    email: string;
-    password: string;
-  };
-  unlock: {
-    email: string;
-    password: string;
-  };
-}
-export interface UserAuthOperations {
   forgotPassword: {
     email: string;
     password: string;
@@ -233,6 +210,21 @@ export interface Event {
     };
     [k: string]: unknown;
   } | null;
+  rules?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
   totalRegistrations?: number | null;
   registrations?: {
     docs?: (string | Registration)[];
@@ -281,15 +273,10 @@ export interface PayloadLockedDocument {
         value: string | Registration;
       } | null);
   globalSlug?: string | null;
-  user:
-    | {
-        relationTo: 'admins';
-        value: string | Admin;
-      }
-    | {
-        relationTo: 'users';
-        value: string | User;
-      };
+  user: {
+    relationTo: 'admins';
+    value: string | Admin;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -299,15 +286,10 @@ export interface PayloadLockedDocument {
  */
 export interface PayloadPreference {
   id: string;
-  user:
-    | {
-        relationTo: 'admins';
-        value: string | Admin;
-      }
-    | {
-        relationTo: 'users';
-        value: string | User;
-      };
+  user: {
+    relationTo: 'admins';
+    value: string | Admin;
+  };
   key?: string | null;
   value?:
     | {
@@ -400,6 +382,7 @@ export interface EventsSelect<T extends boolean = true> {
   time?: T;
   location?: T;
   description?: T;
+  rules?: T;
   totalRegistrations?: T;
   registrations?: T;
   updatedAt?: T;

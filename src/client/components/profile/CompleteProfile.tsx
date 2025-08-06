@@ -4,7 +4,7 @@ import { signOut, useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useMemo, useState } from 'react'
 import { toast } from 'react-toastify'
-import { updateProfile } from './action'
+import { updateProfile } from '@/app/actions/profile'
 
 export default function CompleteProfile() {
   const { data: session, update: updateSession  } = useSession()

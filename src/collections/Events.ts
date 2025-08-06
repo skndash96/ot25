@@ -1,4 +1,5 @@
-import type { Access, CollectionConfig } from 'payload'
+import { Event } from '@/payload-types'
+import type { Access, CollectionBeforeReadHook, CollectionConfig } from 'payload'
 
 const isAdmin: Access = ({ req, id }) => {
   if (req.user?.collection === 'admins') {
@@ -43,7 +44,7 @@ export const Events: CollectionConfig = {
     },
     {
       name: 'time',
-      type: 'text'
+      type: 'text',
     },
     {
       name: 'location',
@@ -55,19 +56,37 @@ export const Events: CollectionConfig = {
       type: 'richText',
     },
     {
+      name: 'rules',
+      type: 'richText',
+    },
+    {
       name: 'totalRegistrations',
       type: 'number',
-      virtual: 'registrations.length'
+      admin: {
+        readOnly: true,
+      },
     },
     {
       name: 'registrations',
       type: 'join',
       collection: 'registrations',
-      on: "event",
+      on: 'event',
       hasMany: true,
       admin: {
-        allowCreate: false
-      }
-    }
+        allowCreate: false,
+      },
+      access: {
+        read: ({ req }) => req.user?.collection === 'admins',
+      },
+    },
   ],
+  hooks: {
+    beforeRead: [
+      async ({ doc, req }) => {
+        if (!doc) return doc
+        doc.totalRegistrations = doc.registrations?.docs?.length ?? 0
+        return doc
+      },
+    ] as CollectionBeforeReadHook<Event>[],
+  },
 }

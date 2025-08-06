@@ -1,6 +1,6 @@
 "use client"
 import { useRouter } from 'next/navigation'
-import React, { useEffect } from 'react'
+import React, { MouseEventHandler, useEffect } from 'react'
 import { toast } from 'react-toastify'
 import { signIn, useSession } from "next-auth/react"
 
@@ -9,7 +9,9 @@ export default function Page() {
   const router = useRouter()
   const [loggingIn, setLoggingIn] = React.useState(false)
 
-  const handleLogin = async () => {
+  const handleLogin : MouseEventHandler = async (e) => {
+    e.preventDefault()
+
     setLoggingIn(true)
     try {
       await signIn("google", { redirect: true })
@@ -41,6 +43,7 @@ export default function Page() {
         Sign in to access your student profile, register for events, and stay updated!
       </p>
       <button
+        type="button"
         className="flex items-center gap-3 px-6 py-2 bg-orange-400 text-black font-semibold rounded-md shadow hover:bg-orange-500 transition"
         disabled={loggingIn}
         onClick={handleLogin}

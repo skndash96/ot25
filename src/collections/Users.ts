@@ -16,13 +16,9 @@ export const Users: CollectionConfig = {
     create: restrictOtherUsers
   },
   admin: {
-    useAsTitle: 'email',
-  },
-  auth: {
-    disableLocalStrategy: true
+    useAsTitle: 'rollNumber',
   },
   fields: [
-    // Email added by default
     {
       name: "name",
       type: "text",
