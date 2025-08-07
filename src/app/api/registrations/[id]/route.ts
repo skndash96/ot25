@@ -1,5 +1,6 @@
 import { auth } from '@/lib/auth'
 import payloadConfig from '@/payload.config'
+import { revalidateTag } from 'next/cache'
 import { NextRequest, NextResponse } from 'next/server'
 import { getPayload } from 'payload'
 
@@ -40,7 +41,7 @@ export const GET = async (
     })
 
     return NextResponse.json({
-      data: registrations
+      data: registrations.totalDocs > 0 // Check if the user has registered for the event
     }, { status: 200 })
   } catch (error) {
     return NextResponse.json({ error: 'Failed to fetch registrations' }, { status: 500 })
@@ -97,8 +98,10 @@ export const POST = async (
       }
     })
 
+    revalidateTag('event-'+eventId)
+
     return NextResponse.json(
-      { message: `Registered successfully` },
+      { data: true },
       { status: 201 },
     )
   } catch (error) {
@@ -154,7 +157,7 @@ export const DELETE = async (
     })
 
     return NextResponse.json(
-      { message: `Unregistered successfully` },
+      { data: false },
       { status: 200 },
     )
   } catch (error) {

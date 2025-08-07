@@ -240,7 +240,7 @@ export interface Event {
  */
 export interface Registration {
   id: string;
-  event?: (string | null) | Event;
+  event: string | Event;
   user: string | User;
   createdAt: string;
   updatedAt: string;

@@ -2,7 +2,7 @@ import EventsList from "@/client/components/events/EventsList"
 import { Event } from "@/payload-types"
 
 export default async function EventsPage() {
-  const res = await fetch(
+  const eventsRes = await fetch(
     process.env.NEXT_PUBLIC_URL!+`/api/events?limit=100`,
     {
       next: {
@@ -12,12 +12,12 @@ export default async function EventsPage() {
     }
   )
 
-  if (!res.ok) {
+  if (!eventsRes.ok) {
     throw new Error('Failed to fetch data')
   }
 
-  const data = await res.json()
-  const events = data.docs as Event[]
+  const eventsData = await eventsRes.json()
+  const events = eventsData.docs as Event[]
 
   return (
     <EventsList events={events} />

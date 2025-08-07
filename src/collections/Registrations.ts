@@ -20,6 +20,7 @@ export const Registrations: CollectionConfig = {
       name: "event",
       type: "relationship",
       relationTo: "events",
+      required: true,
     },
     {
       name: 'user',

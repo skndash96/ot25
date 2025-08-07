@@ -35,7 +35,7 @@ export const GET = async (
     })
 
     return NextResponse.json({
-      data: registrations,
+      data: registrations.docs.map(r => typeof r.event === 'string' ? r.event : r.event.id)
     }, { status: 200 })
   } catch (error) {
     return NextResponse.json({ error: 'Failed to fetch registrations' }, { status: 500 })

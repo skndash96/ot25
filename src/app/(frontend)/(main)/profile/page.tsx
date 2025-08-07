@@ -12,6 +12,7 @@ import {
 import Link from 'next/link'
 import { signOut, useSession } from 'next-auth/react'
 import { generateAndDownloadIDCard } from '@/client/utils/qrcode'
+import Image from 'next/image'
 
 export default function Profile() {
   const { data: session, status } = useSession()
@@ -105,15 +106,19 @@ export default function Profile() {
         </div>
 
         {/* Avatar */}
-        <div className="flex justify-center mb-8">
-          <div className="w-20 h-20 rounded-full bg-amber-400 text-black text-2xl font-bold grid place-items-center">
-            {user.name
-              ?.split(' ')
-              .slice(0, 2)
-              .map((word) => word[0])
-              .join('')
-              .toUpperCase()}
-          </div>
+        <div className="w-32 h-32 relative border border-amber-400 mx-auto flex justify-center mb-8 rounded-full overflow-hidden">
+          {user.image ? (
+            <Image className="" fill src={user.image} alt="Profile Picture" />
+          ) : (
+            <div className="bg-amber-400 text-black text-2xl font-bold grid place-items-center">
+              {user.name
+                ?.split(' ')
+                .slice(0, 2)
+                .map((word) => word[0])
+                .join('')
+                .toUpperCase()}
+            </div>
+          )}
         </div>
 
         {/* Grid Info */}

@@ -12,8 +12,8 @@ export default async function EventPage({
     process.env.NEXT_PUBLIC_URL!+`/api/events/${id}`,
     {
       next: {
-        revalidate: 1, // 30 minutes
-        tags: ['events']
+        revalidate: 30*60, // 30 minutes
+        tags: ['events', 'event-'+id]
       },
     }
   )

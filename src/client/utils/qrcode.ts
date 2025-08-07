@@ -3,10 +3,12 @@ import { Session } from 'next-auth'
 import QRCodeStyling from 'qr-code-styling'
 
 const width = 400
-const height = 520
-const bgColor = '#111'
-const borderColor = '#f59e0b'
+const height = 550
+const bgColor = '#0f0f23'
+const primaryColor = '#f59e0b'
 const textColor = '#facc15'
+const labelColor = '#fcd34d'
+const cardPadding = 20
 
 function createCanvas(): HTMLCanvasElement {
   const canvas = document.createElement('canvas')
@@ -19,32 +21,82 @@ async function loadFont() {
   await document.fonts.load("18px 'Clash Display', sans-serif")
 }
 
-async function drawProfileImage(ctx: CanvasRenderingContext2D, user: Session['user']) {
-  const radius = 50
-  const centerX = width / 2
-  const centerY = 90
+function drawCardBackground(ctx: CanvasRenderingContext2D) {
+  ctx.fillStyle = bgColor
+  ctx.fillRect(0, 0, width, height)
 
-  if (!user.image || user.image.startsWith('http')) {
+  const borderRadius = 12
+  const borderWidth = 3
+
+  ctx.strokeStyle = primaryColor
+  ctx.lineWidth = borderWidth
+  ctx.beginPath()
+  ctx.roundRect(
+    cardPadding / 2,
+    cardPadding / 2,
+    width - cardPadding,
+    height - cardPadding,
+    borderRadius,
+  )
+  ctx.stroke()
+}
+
+async function drawProfileImage(ctx: CanvasRenderingContext2D, user: Session['user']) {
+  const radius = 65
+  const centerX = width / 2
+  const centerY = 100
+
+  ctx.strokeStyle = primaryColor
+  ctx.lineWidth = 4
+  ctx.beginPath()
+  ctx.arc(centerX, centerY, radius + 6, 0, Math.PI * 2)
+  ctx.stroke()
+
+  if (!user.image || !user.image.startsWith('http')) {
     drawInitials(ctx, user, centerX, centerY, radius)
     return
   }
 
-  await new Promise<void>((resolve, reject) => {
-    const img = new Image()
-    img.crossOrigin = 'anonymous'
-    img.onload = () => {
-      ctx.save()
-      ctx.beginPath()
-      ctx.arc(centerX, centerY, radius, 0, Math.PI * 2)
-      ctx.closePath()
-      ctx.clip()
-      ctx.drawImage(img, centerX - radius, centerY - radius, radius * 2, radius * 2)
-      ctx.restore()
-      resolve()
-    }
-    img.onerror = reject
-    img.src = user.image!
-  })
+  try {
+    await new Promise<void>((resolve, reject) => {
+      const img = new Image()
+      img.crossOrigin = 'anonymous'
+      img.onload = () => {
+        ctx.save()
+        ctx.beginPath()
+        ctx.arc(centerX, centerY, radius, 0, Math.PI * 2)
+        ctx.closePath()
+        ctx.clip()
+
+        const imgAspect = img.width / img.height
+        let drawWidth = radius * 2
+        let drawHeight = radius * 2
+        let drawX = centerX - radius
+        let drawY = centerY - radius
+
+        if (imgAspect > 1) {
+          drawHeight = drawWidth / imgAspect
+          drawY = centerY - drawHeight / 2
+        } else {
+          drawWidth = drawHeight * imgAspect
+          drawX = centerX - drawWidth / 2
+        }
+
+        ctx.drawImage(img, drawX, drawY, drawWidth, drawHeight)
+        ctx.restore()
+        resolve()
+      }
+      img.onerror = (e) => {
+        console.error(e)
+        drawInitials(ctx, user, centerX, centerY, radius)
+        resolve()
+      }
+      img.src = user.image!
+    })
+  } catch (e) {
+    console.error(e)
+    drawInitials(ctx, user, centerX, centerY, radius)
+  }
 }
 
 function drawInitials(
@@ -60,14 +112,17 @@ function drawInitials(
     .map((w) => w[0] || '')
     .join('')
     .toUpperCase()
-  ctx.fillStyle = borderColor
+
+  ctx.fillStyle = primaryColor
   ctx.beginPath()
   ctx.arc(cx, cy, radius, 0, Math.PI * 2)
   ctx.fill()
+
   ctx.fillStyle = '#000'
-  ctx.font = 'bold 28px "Clash Display"'
+  ctx.font = 'bold 36px "Clash Display"'
   ctx.textAlign = 'center'
-  ctx.fillText(initials, cx, cy - 14)
+  ctx.textBaseline = 'middle'
+  ctx.fillText(initials, cx, cy)
 }
 
 function drawFields(
@@ -81,46 +136,30 @@ function drawFields(
   ctx.textBaseline = 'top'
   ctx.textAlign = 'left'
 
-  const fieldFont = '16px "Clash Display"'
-  const valueFont = 'bold 16px "Clash Display"'
+  const labelFont = 'bold 14px "Clash Display"'
+  const valueFont = '16px "Clash Display"'
 
-  ctx.font = fieldFont
-  const labelWidths = fields.map((f) => ctx.measureText(f.label + ':').width)
-  const maxLabelWidth = Math.max(...labelWidths) + 12
+  ctx.font = labelFont
+  const labelWidths = fields.map((f) => ctx.measureText(f.label.toUpperCase() + ':').width)
+  const maxLabelWidth = Math.max(...labelWidths) + 15
 
   let y = startY
 
-  for (const { label, value } of fields) {
-    ctx.font = fieldFont
-    ctx.fillStyle = '#fcd34d'
-    ctx.fillText(label + ':', startX, y)
+  for (let i = 0; i < fields.length; i++) {
+    const { label, value } = fields[i]
+
+    ctx.fillStyle = primaryColor
+    ctx.fillRect(startX - 10, y - 2, 3, 22)
+
+    ctx.font = labelFont
+    ctx.fillStyle = labelColor
+    ctx.fillText(label.toUpperCase(), startX, y)
 
     ctx.font = valueFont
     ctx.fillStyle = textColor
+    ctx.fillText(value, startX + maxLabelWidth, y)
 
-    const words = value.split(' ')
-    let line = ''
-    const lines: string[] = []
-
-    for (const word of words) {
-      const testLine = line + word + ' '
-      const testWidth = ctx.measureText(testLine).width
-
-      if (testWidth > maxWidth - maxLabelWidth && line !== '') {
-        lines.push(line)
-        line = word + ' '
-      } else {
-        line = testLine
-      }
-    }
-    if (line) lines.push(line)
-
-    for (const l of lines) {
-      ctx.fillText(l.trim(), startX + maxLabelWidth, y)
-      y += lineHeight
-    }
-
-    y += 4
+    y += lineHeight + 8
   }
 }
 
@@ -132,46 +171,73 @@ async function drawQRCode(
   y: number,
 ) {
   const qrCode = new QRCodeStyling({
+    type: 'canvas',
+    shape: 'square',
     width: 300,
     height: 300,
-    type: 'svg',
     data: token,
-    image: '/logo_short_white.png',
-    dotsOptions: {
-      color: '#facc15',
-      type: 'extra-rounded',
-    },
-    backgroundOptions: {
-      color: '#111111',
+    margin: 0,
+    qrOptions: {
+      mode: 'Byte',
+      errorCorrectionLevel: 'M',
     },
     imageOptions: {
-      crossOrigin: 'anonymous',
+      saveAsBlob: true,
+      hideBackgroundDots: true,
+      imageSize: 0.4,
       margin: 12,
     },
+    dotsOptions: {
+      type: 'extra-rounded',
+      color: '#ff8000',
+      roundSize: true,
+    },
+    backgroundOptions: { round: 0, color: '#00000000' },
+    image: '/logo_short_white.png',
+    cornersSquareOptions: { type: 'extra-rounded', color: '#ff8040' },
+    cornersDotOptions: { type: 'rounded', color: '#f59e0b' },
   })
 
-  await new Promise<void>(async (resolve, reject) => {
-    const img = new Image()
-    img.onload = () => {
-      ctx.drawImage(img, x, y, size, size)
-      ctx.font = '12px sans-serif'
-      ctx.textAlign = 'center'
-      ctx.fillStyle = textColor
-      ctx.fillText('QR Code', width / 2, y + size + 14)
-      resolve()
-    }
-    img.onerror = reject
-    const blob = await qrCode.getRawData('png') as Blob
-    const url = URL.createObjectURL(blob!)
-    img.src = url
-    document.body.appendChild(img)
-  })
+  try {
+    await new Promise<void>(async (resolve, reject) => {
+      const img = new Image()
+      img.onload = () => {
+        ctx.drawImage(img, x, y, size, size)
+
+        ctx.font = 'bold 12px "Clash Display"'
+        ctx.textAlign = 'center'
+        ctx.fillStyle = labelColor
+        ctx.fillText('SCAN FOR VERIFICATION', width / 2, y + size + 20)
+
+        resolve()
+      }
+      img.onerror = reject
+
+      const blob = (await qrCode.getRawData('png')) as Blob
+      if (blob) {
+        const url = URL.createObjectURL(blob)
+        img.src = url
+      } else {
+        reject(new Error('Failed to generate QR code'))
+      }
+    })
+  } catch (error) {
+    console.error('QR Code generation failed:', error)
+
+    ctx.fillStyle = primaryColor
+    ctx.fillRect(x, y, size, size)
+    ctx.font = 'bold 14px "Clash Display"'
+    ctx.textAlign = 'center'
+    ctx.fillStyle = textColor
+    ctx.fillText('QR CODE', width / 2, y + size / 2)
+    ctx.fillText('UNAVAILABLE', width / 2, y + size / 2 + 20)
+  }
 }
 
 function downloadCanvas(canvas: HTMLCanvasElement, filename: string) {
   const link = document.createElement('a')
   link.download = filename
-  link.href = canvas.toDataURL()
+  link.href = canvas.toDataURL('image/png', 1.0)
   link.click()
 }
 
@@ -185,31 +251,32 @@ export async function generateAndDownloadIDCard(
 
   await loadFont()
 
-  ctx.fillStyle = bgColor
-  ctx.fillRect(0, 0, width, height)
-
+  drawCardBackground(ctx)
   await drawProfileImage(ctx, user)
 
   drawFields(
     ctx,
     [
-      { label: 'Name', value: user.name! },
+      { label: 'Name', value: user.name ? (user.name.slice(0,25) + (user.name.length > 25 ? ".." : "")) : "" },
       { label: 'Roll Number', value: user.rollNumber! },
       { label: 'Department', value: user.department! },
-      { label: 'Gender', value: user.gender!.toUpperCase() },
+      {
+        label: 'Gender',
+        value: user.gender!.charAt(0).toUpperCase() + user.gender!.slice(1).toLowerCase(),
+      },
       { label: 'Phone', value: user.phoneNumber! },
     ],
-    40,
-    180,
-    320,
-    22,
+    cardPadding + 20,
+    190,
+    width - (cardPadding + 20) * 2,
+    18,
   )
 
-  const qrSize = 180
+  const qrSize = 150
   const qrX = width / 2 - qrSize / 2
-  const qrY = height - 200
+  const qrY = height - 210
 
   await drawQRCode(ctx, token, qrSize, qrX, qrY)
 
-  downloadCanvas(canvas, `${user.rollNumber || 'id'}.png`)
+  downloadCanvas(canvas, `${user.rollNumber}-${user.id}`)
 }

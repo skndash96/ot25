@@ -12,10 +12,7 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const token = encrypt(JSON.stringify({
-    id: user.id,
-    name: user.name
-  }))
+  const token = encrypt(`${user.id}-${user.rollNumber}-${user.name}`)
 
   return NextResponse.json({ token });
 }
