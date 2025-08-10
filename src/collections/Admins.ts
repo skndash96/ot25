@@ -1,26 +1,19 @@
-import type { Access, CollectionConfig } from 'payload'
-
-const restrictOtherUsers : Access = ({ req, id }) => {
-  if (req.user?.collection === 'admins') {
-    return true
-  }
-  return false
-}
+import { admins } from '@/access/admins'
+import type { CollectionConfig } from 'payload'
 
 export const Admins: CollectionConfig = {
   slug: 'admins',
   access: {
-    read: restrictOtherUsers,
-    update: restrictOtherUsers,
-    delete: restrictOtherUsers,
-    create: restrictOtherUsers
+    read: admins,
+    update: admins,
+    delete: admins,
+    create: admins
   },
   admin: {
     useAsTitle: 'email',
   },
   auth: {
+    tokenExpiration: 60 * 60 * 24 * 100, // 100 days
   },
-  fields: [
-    // Email added by default
-  ],
+  fields: [],
 }

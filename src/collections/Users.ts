@@ -1,17 +1,13 @@
+import { admins } from '@/access/admins'
 import type { Access, CollectionConfig } from 'payload'
-
-const restrictOtherUsers : Access = ({ req }) => {
-  if (req.user?.collection === 'admins') return true
-  return false
-}
 
 export const Users: CollectionConfig = {
   slug: 'users',
   access: {
-    read: restrictOtherUsers,
-    update: restrictOtherUsers,
-    delete: restrictOtherUsers,
-    create: restrictOtherUsers
+    read: admins, // next auth takes care of giving profile data to client
+    update: admins,
+    delete: admins,
+    create: admins
   },
   admin: {
     useAsTitle: 'rollNumber',

@@ -1,20 +1,15 @@
+import { admins } from '@/access/admins'
+import { anyone } from '@/access/anyone'
 import { Event } from '@/payload-types'
-import type { Access, CollectionBeforeReadHook, CollectionConfig } from 'payload'
-
-const isAdmin: Access = ({ req, id }) => {
-  if (req.user?.collection === 'admins') {
-    return true
-  }
-  return false
-}
+import type { CollectionBeforeReadHook, CollectionConfig } from 'payload'
 
 export const Events: CollectionConfig = {
   slug: 'events',
   access: {
-    read: () => true,
-    update: isAdmin,
-    delete: isAdmin,
-    create: isAdmin,
+    read: anyone,
+    update: admins,
+    delete: admins,
+    create: admins,
   },
   fields: [
     {
@@ -76,7 +71,7 @@ export const Events: CollectionConfig = {
         allowCreate: false,
       },
       access: {
-        read: ({ req }) => req.user?.collection === 'admins',
+        read: admins,
       },
     },
   ],

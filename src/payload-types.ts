@@ -72,6 +72,8 @@ export interface Config {
     media: Media;
     events: Event;
     registrations: Registration;
+    'attendance-records': AttendanceRecord;
+    'manager-records': ManagerRecord;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -87,6 +89,8 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     events: EventsSelect<false> | EventsSelect<true>;
     registrations: RegistrationsSelect<false> | RegistrationsSelect<true>;
+    'attendance-records': AttendanceRecordsSelect<false> | AttendanceRecordsSelect<true>;
+    'manager-records': ManagerRecordsSelect<false> | ManagerRecordsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -247,6 +251,39 @@ export interface Registration {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "attendance-records".
+ */
+export interface AttendanceRecord {
+  id: string;
+  event: string | Event;
+  attendee: string | User;
+  manager: string | Admin;
+  timestamp: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "manager-records".
+ */
+export interface ManagerRecord {
+  id: string;
+  event: string | Event;
+  manager: string | Admin;
+  records:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -271,6 +308,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'registrations';
         value: string | Registration;
+      } | null)
+    | ({
+        relationTo: 'attendance-records';
+        value: string | AttendanceRecord;
+      } | null)
+    | ({
+        relationTo: 'manager-records';
+        value: string | ManagerRecord;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -397,6 +442,29 @@ export interface RegistrationsSelect<T extends boolean = true> {
   user?: T;
   createdAt?: T;
   updatedAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "attendance-records_select".
+ */
+export interface AttendanceRecordsSelect<T extends boolean = true> {
+  event?: T;
+  attendee?: T;
+  manager?: T;
+  timestamp?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "manager-records_select".
+ */
+export interface ManagerRecordsSelect<T extends boolean = true> {
+  event?: T;
+  manager?: T;
+  records?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

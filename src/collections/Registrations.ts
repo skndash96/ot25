@@ -1,19 +1,14 @@
-import type { Access, CollectionConfig } from 'payload'
-
-const restrictOtherUsers : Access = ({ req, id }) => {
-  if (req.user?.collection === 'admins' || req.user?.id && req.user.id === id) {
-    return true
-  }
-  return false
-}
+import { admins } from '@/access/admins'
+import { anyone } from '@/access/anyone'
+import type { CollectionConfig } from 'payload'
 
 export const Registrations: CollectionConfig = {
   slug: 'registrations',
   access: {
-    read: () => true,
-    update: restrictOtherUsers,
-    delete: restrictOtherUsers,
-    create: restrictOtherUsers,
+    read: anyone,
+    update: admins,
+    delete: admins,
+    create: admins,
   },
   fields: [
     {
@@ -28,7 +23,7 @@ export const Registrations: CollectionConfig = {
       relationTo: 'users',
       required: true,
       access: {
-        read: ({ req }) => req.user?.collection === 'admins',
+        read: admins,
       }
     },
     {
