@@ -42,13 +42,21 @@ export default function CompleteProfile() {
   const validate = () => {
     const newErrors: Record<string, string> = {}
     if (!name.trim()) newErrors.name = 'Name is required'
+    else if (name.length < 3) newErrors.name = 'Name must be at least 3 characters'
+    else if (name.length > 30) newErrors.name = 'Name must be less than 30 characters'
+    else if (!/^[a-zA-Z\s]+$/.test(name)) newErrors.name = 'Name can only contain letters and spaces'
+
     if (!gender) newErrors.gender = 'Gender is required'
     if (!department) newErrors.department = 'Department is required'
+
     if (!rollNumber.trim()) newErrors.rollNumber = 'Roll Number is required'
+    else if (!/^\d+$/.test(rollNumber)) newErrors.rollNumber = 'Roll Number must be only digits'
+
     if (!phoneNumber.trim()) newErrors.phoneNumber = 'Phone Number is required'
-    if (phoneNumber && !/^\d{10}$/.test(phoneNumber)) {
-      newErrors.phoneNumber = 'Phone Number must be 10 digits'
+    else if (phoneNumber && !/^(\+91)?\s?\d{5}\s?\d{5}$/.test(phoneNumber)) {
+      newErrors.phoneNumber = 'Phone Number must be valid Indian phone number'
     }
+
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
   }
@@ -234,7 +242,7 @@ export default function CompleteProfile() {
             name="name"
             placeholder="John Doe"
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={(e) => setName(e.target.value.trim())}
             className={`w-full p-2 bg-neutral-900 border ${errors.name ? 'border-red-500' : 'border-amber-600'} rounded-md focus:outline-none focus:ring-2 focus:ring-amber-400`}
           />
           {errors.name && <p className="text-red-500 text-xs">{errors.name}</p>}
@@ -290,7 +298,7 @@ export default function CompleteProfile() {
             id="rollNumber"
             name="rollNumber"
             value={rollNumber}
-            onChange={(e) => setRollNumber(e.target.value)}
+            onChange={(e) => setRollNumber(e.target.value.trim())}
             className={`w-full p-2 bg-neutral-900 border ${errors.rollNumber ? 'border-red-500' : 'border-amber-600'} rounded-md focus:outline-none focus:ring-2 focus:ring-amber-400`}
           />
           {errors.rollNumber && <p className="text-red-500 text-xs">{errors.rollNumber}</p>}
@@ -306,7 +314,7 @@ export default function CompleteProfile() {
             id="phoneNumber"
             placeholder="9876543210"
             value={phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
+            onChange={(e) => setPhoneNumber(e.target.value.trim())}
             className={`w-full p-2 bg-neutral-900 border ${errors.phoneNumber ? 'border-red-500' : 'border-amber-600'} rounded-md focus:outline-none focus:ring-2 focus:ring-amber-400`}
           />
           {errors.phoneNumber && <p className="text-red-500 text-xs">{errors.phoneNumber}</p>}

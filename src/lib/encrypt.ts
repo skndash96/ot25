@@ -1,12 +1,12 @@
 import crypto from 'node:crypto'
+import { chacha20poly1305 } from '@noble/ciphers/chacha'
 
 export function encrypt(text: string): string {
-  const iv = crypto.randomBytes(12)
-  const secret = Buffer.from(process.env.QR_CODE_SECRET!, 'hex') 
-  const cipher = crypto.createCipheriv('aes-256-gcm', secret, iv)
+  const key = Buffer.from(process.env.QR_CODE_SECRET!, 'hex')
+  
+  const iv = crypto.randomBytes(12)  // Use Noble's randomBytes
+  const cipher = chacha20poly1305(key, iv)
+  const encrypted = cipher.encrypt(Buffer.from(text, 'utf8'))
 
-  const encrypted = Buffer.concat([cipher.update(text, 'utf8'), cipher.final()])
-  const authTag = cipher.getAuthTag()
-
-  return Buffer.concat([iv, authTag, encrypted]).toString('base64')
+  return Buffer.concat([iv, encrypted]).toString('base64')
 }

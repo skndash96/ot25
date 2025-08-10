@@ -8,6 +8,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   session: {
     strategy: 'jwt',
   },
+  trustHost: true,
   callbacks: {
     async signIn({ user, account, profile }) {
       const payload = await getPayload({ config: payloadConfig })

@@ -1,9 +1,7 @@
 import type { Access, CollectionConfig } from 'payload'
 
-const restrictOtherUsers : Access = ({ req, id }) => {
-  if (req.user?.collection === 'admins' || req.user?.id && req.user.id === id) {
-    return true
-  }
+const restrictOtherUsers : Access = ({ req }) => {
+  if (req.user?.collection === 'admins') return true
   return false
 }
 

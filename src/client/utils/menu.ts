@@ -1,8 +1,8 @@
 export const menuItems = [
   { label: "Home", href: "#beginnings" },
-  { label: "Schedule", href: "#schedule" },
-  { label: "Merchandise", href: "#proshows" },
-  { label: "Events & Proshows", href: "#events" },
-  { label: "Magazine", href: "#events" },
-  { label: "FAQs", href: "#events" },
+  { label: "Schedule", href: "/schedule" },
+  { label: "Merchandise", href: "/merch" },
+  { label: "Events & Proshows", href: "/events" },
+  { label: "Online Presence", href: "/online-presence" },
+  { label: "FAQs", href: "#faqs" },
 ]

@@ -7,10 +7,10 @@ import { getPayload } from "payload"
 import { z } from "zod"
 
 const inputSchema = z.object({
-  name: z.string().min(1, "Name is required"),
+  name: z.string().min(1, "Name is required").regex(/^[a-zA-Z\s]+$/, "Name must contain only letters and spaces"),
+  rollNumber: z.string().min(1, "Roll Number is required").regex(/^\d+$/, "Roll Number must be only digits"),
   phoneNumber: z.string().regex(/^(\+91)?\s?\d{5}\s?\d{5}$/, "Phone Number must be valid Indian phone number"),
   gender: z.enum(["MALE", "FEMALE", "OTHER"]),
-  rollNumber: z.string().min(1, "Roll Number is required"),
   department: z.enum(departments, "Department is required and should be valid"),
   image: z.url().optional()
 })

@@ -30,6 +30,9 @@ export default buildConfig({
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
+  cors: {
+    origins: ["https://34b9925548ca.ngrok-free.app"]
+  },
   db: mongooseAdapter({
     url: process.env.DATABASE_URI || '',
   }),

@@ -141,7 +141,7 @@ export default function EventPage({ event }: { event: Event }) {
               <button
                 disabled={hasRegistered === undefined}
                 onClick={handleSubmitRegistration}
-                className="w-full py-4 px-6 rounded-xl font-semibold text-lg transition-all duration-200 bg-amber-400 hover:bg-amber-500 text-neutral-900 shadow-lg hover:shadow-amber-400/25"
+                className="w-full py-4 px-6 rounded-xl font-semibold text-lg transition-all duration-200 disabled:bg-transparent bg-amber-400 hover:bg-amber-500 text-neutral-900 shadow-lg hover:shadow-amber-400/25"
               >
                 {hasRegistered === undefined ? 'Loading...' : 'Register for Event'}
               </button>
