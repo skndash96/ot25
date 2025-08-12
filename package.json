@@ -47,6 +47,7 @@
     "qrcode": "^1.5.4",
     "react": "19.1.1",
     "react-avatar-editor": "^13.0.2",
+    "react-dom": "19.1.1",
     "react-image-crop": "^11.0.10",
     "react-toastify": "^11.0.5",
     "sharp": "0.34.2",
