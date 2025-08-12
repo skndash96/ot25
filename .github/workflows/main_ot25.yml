@@ -17,16 +17,17 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
       - name: Set up Node.js version
         uses: actions/setup-node@v3
         with:
           node-version: '22.x'
+          cache: 'pnpm'
 
-      - name: npm install, build, and test
+      - name: pnpm install and build
         run: |
-          npm install
-          npm run build --if-present
-          npm run test --if-present
+          pnpm install
+          pnpm run build --if-present
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
@@ -45,12 +46,14 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: node-app
+
       - name: Login to Azure
         uses: azure/login@v2
         with:
           client-id: ${{ secrets.__clientidsecretname__ }}
           tenant-id: ${{ secrets.__tenantidsecretname__ }}
           subscription-id: ${{ secrets.__subscriptionidsecretname__ }}
+
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
