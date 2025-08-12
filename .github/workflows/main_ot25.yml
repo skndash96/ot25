@@ -22,12 +22,11 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '22.x'
-          cache: 'pnpm'
 
-      - name: pnpm install and build
+      - name: npm install and build
         run: |
-          pnpm install
-          pnpm run build --if-present
+          npm install
+          npm run build --if-present
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
