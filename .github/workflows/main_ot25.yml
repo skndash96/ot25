@@ -32,8 +32,7 @@ jobs:
         with:
           name: node-app
           path: |
-            .next/standalone
-            .next/static
+            .next
             public
             package.json
 
