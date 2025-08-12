@@ -76,7 +76,7 @@ export default function LoadingScreen() {
       clearTimeout(timer)
       document.body.style.overflow = 'auto'
     }
-  }, [])
+  }, [setLoading])
 
   if (completedEndAnimation) return null
 

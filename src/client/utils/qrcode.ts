@@ -58,7 +58,7 @@ async function drawProfileImage(ctx: CanvasRenderingContext2D, user: Session['us
   }
 
   try {
-    await new Promise<void>((resolve, reject) => {
+    await new Promise<void>(resolve => {
       const img = new Image()
       img.crossOrigin = 'anonymous'
       img.onload = () => {

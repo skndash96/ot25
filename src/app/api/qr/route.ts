@@ -1,8 +1,8 @@
 import { auth } from "@/lib/auth";
 import { encrypt } from "@/lib/encrypt";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
-export const GET = async (req: NextRequest) => {
+export const GET = async () => {
   const session = await auth()
 
   const user = session?.user

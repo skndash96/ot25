@@ -77,7 +77,7 @@ export const Events: CollectionConfig = {
   ],
   hooks: {
     beforeRead: [
-      async ({ doc, req }) => {
+      async ({ doc }) => {
         if (!doc) return doc
         doc.totalRegistrations = doc.registrations?.docs?.length ?? 0
         return doc

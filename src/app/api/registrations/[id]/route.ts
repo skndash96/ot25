@@ -44,6 +44,7 @@ export const GET = async (
       data: registrations.totalDocs > 0 // Check if the user has registered for the event
     }, { status: 200 })
   } catch (error) {
+    console.error('Error fetching registration:', error)
     return NextResponse.json({ error: 'Failed to fetch registrations' }, { status: 500 })
   }
 }
@@ -105,6 +106,7 @@ export const POST = async (
       { status: 201 },
     )
   } catch (error) {
+    console.error('Error registering for event:', error)
     return NextResponse.json({ error: 'Registration failed' }, { status: 500 })
   }
 }
@@ -161,6 +163,7 @@ export const DELETE = async (
       { status: 200 },
     )
   } catch (error) {
+    console.error('Error deleting registration:', error)
     return NextResponse.json({ error: 'Failed to unregister' }, { status: 500 })
   }
 }

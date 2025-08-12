@@ -16,10 +16,10 @@ export default function useAuthGuard(completeProfile = true) {
       return
     }
 
-    if (!user.rollNumber) {
+    if (completeProfile && !user.rollNumber) {
       router.push("/profile/update");
     }
-  }, [session, status]);
+  }, [completeProfile, router, session, status]);
 
   return null
 }

@@ -10,7 +10,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
   trustHost: true,
   callbacks: {
-    async signIn({ user, account, profile }) {
+    async signIn({ account, profile }) {
       const payload = await getPayload({ config: payloadConfig })
 
       if (account && profile && account.provider === 'google') {

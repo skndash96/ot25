@@ -1,4 +1,3 @@
-import Header from '@/client/components/Header'
 import Image from 'next/image'
 import React from 'react'
 

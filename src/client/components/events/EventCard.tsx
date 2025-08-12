@@ -1,9 +1,7 @@
 import { Event } from '@/payload-types'
 import React from 'react'
-import { RichText } from '@payloadcms/richtext-lexical/react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Badge } from '@/components/ui/badge'
 import { Calendar, Clock, MapPin, ArrowRight, CheckCircle } from 'lucide-react'
 
 export default function EventCard({

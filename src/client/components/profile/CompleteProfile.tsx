@@ -183,9 +183,9 @@ export default function CompleteProfile() {
           <label className="block text-sm font-medium text-amber-200">Profile Picture</label>
 
           <div className="flex flex-col items-center gap-4">
-            {newProfilePicture || user?.image ? (
+            {(newProfilePicture || user?.image) ? (
               <Image
-                src={newProfilePicture || user?.image!}
+                src={newProfilePicture || user?.image || ""}
                 className="w-24 h-24 rounded-full object-cover border-2 border-amber-400"
                 alt="Profile Pic"
                 width={96}

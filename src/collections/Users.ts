@@ -1,5 +1,5 @@
 import { admins } from '@/access/admins'
-import type { Access, CollectionConfig } from 'payload'
+import type { CollectionConfig } from 'payload'
 
 export const Users: CollectionConfig = {
   slug: 'users',
