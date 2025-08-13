@@ -5,6 +5,10 @@ on:
     branches:
       - main
 
+permissions:
+  id-token: write
+  contents: read
+
 env:
   AZURE_WEBAPP_NAME: ot25
   AZURE_WEBAPP_SLOT: production
