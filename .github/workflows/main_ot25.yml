@@ -12,7 +12,7 @@ permissions:
 env:
   AZURE_WEBAPP_NAME: ot25
   AZURE_WEBAPP_SLOT: production
-  AZURE_CONTAINER_REGISTRY: ot25acr-eha7dve0gxgxhecw.azurecr.io
+  AZURE_CONTAINER_REGISTRY: ot25acr-cbb5dqcbggash7cy.azurecr.io
   IMAGE_NAME: ot25-nextjs-standalone
 
 jobs:
