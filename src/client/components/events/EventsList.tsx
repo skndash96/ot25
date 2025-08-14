@@ -3,11 +3,17 @@ import { Event } from '@/payload-types'
 import React, { useEffect, useState } from 'react'
 import EventCard from './EventCard'
 import { toast } from 'react-toastify'
+import { useSession } from 'next-auth/react'
 
 export default function EventsList({ events }: { events: Event[] }) {
+  const { data: session } = useSession()
   const [registrations, setRegistrations] = useState<string[]>([])
 
   useEffect(() => {
+    if (!session || !session.user) {
+      return
+    }
+
     fetch(`${process.env.NEXT_PUBLIC_URL}/api/registrations`)
       .then((res) => {
         if (!res.ok) throw new Error('Failed to fetch registrations')
@@ -20,7 +26,7 @@ export default function EventsList({ events }: { events: Event[] }) {
         toast.error(`Error fetching registrations`)
         console.error('Error fetching registrations:', err)
       })
-  }, [])
+  }, [session])
 
   return (
     <div className="p-4 md:p-8">

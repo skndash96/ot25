@@ -27,6 +27,11 @@ export const Events: CollectionConfig = {
       required: false,
     },
     {
+      name: 'isPublic',
+      type: 'checkbox',
+      defaultValue: false,
+    },
+    {
       name: 'type',
       type: 'select',
       options: ['Guest Lecture', 'Proshow', 'Workshop', 'Event', 'Other'],

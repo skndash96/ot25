@@ -7,11 +7,17 @@ import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { Calendar, Clock, MapPin, Users, CheckCircle, ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
+import { useSession } from 'next-auth/react'
 
 export default function EventPage({ event }: { event: Event }) {
+  const { data: session } = useSession()
   const [hasRegistered, setHasRegistered] = useState<boolean | undefined>()
 
   useEffect(() => {
+    if (!session || !session.user) {
+      return
+    }
+
     fetch(`${process.env.NEXT_PUBLIC_URL}/api/registrations/${event.id}`)
       .then((res) => {
         if (!res.ok) throw new Error('Failed to fetch registration')
@@ -24,7 +30,7 @@ export default function EventPage({ event }: { event: Event }) {
         toast.error(`Error fetching registration`)
         console.error('Error fetching registration:', err)
       })
-  }, [event.id])
+  }, [session, event.id])
 
   const handleSubmitRegistration = async () => {
     try {

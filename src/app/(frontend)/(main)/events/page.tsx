@@ -3,8 +3,12 @@ import { Event } from "@/payload-types"
 
 export default async function EventsPage() {
   try {
+    const q = new URLSearchParams()
+    q.set('where[isPublic][equals]', 'true')
+    q.set('limit', '100')
+
     const eventsRes = await fetch(
-      process.env.NEXT_PUBLIC_URL!+`/api/events?limit=100`,
+      process.env.NEXT_PUBLIC_URL!+"/api/events?" + q.toString(),
       {
         next: {
           revalidate: 30*60, // 30 minutes
