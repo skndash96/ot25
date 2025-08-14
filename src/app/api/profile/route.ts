@@ -34,26 +34,30 @@ export const POST = async (req: NextRequest) => {
     image: undefined
   }
 
-  const profilePic = formData.get("profilePicture") as File
+  const profilePic = formData.get("profilePicture") as File | null
 
   const { data, success: parseSuccess, error: parseError } = inputSchema.safeParse(textFields)
-
+  
   if (!parseSuccess) {
     throw new Error(parseError.message)
   }
+  
+  if (profilePic) {
+    const uploadRes = await utapi.uploadFiles(profilePic)
 
-  const uploadRes = await utapi.uploadFiles(profilePic)
-
-  if (uploadRes.error) {
-    console.error(uploadRes.error)
-
-    return NextResponse.json({
-      error: "Failed to upload file"
-    }, {
-      status: 500
-    })
+    if (uploadRes.error) {
+      console.error(uploadRes.error)
+  
+      return NextResponse.json({
+        error: "Failed to upload file"
+      }, {
+        status: 500
+      })
+    } else {
+      data.image = uploadRes.data.ufsUrl
+    }
   } else {
-    data.image = uploadRes.data.ufsUrl
+    delete data.image
   }
 
   await payload.update({
