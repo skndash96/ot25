@@ -29,6 +29,7 @@ jobs:
           client-id: ${{ secrets.__clientidsecretname__ }}
           tenant-id: ${{ secrets.__tenantidsecretname__ }}
           subscription-id: ${{ secrets.__subscriptionidsecretname__ }}
+          auth-type: id-token
 
       - name: Log in to ACR
         run: |
