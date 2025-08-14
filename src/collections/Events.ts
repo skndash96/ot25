@@ -1,6 +1,7 @@
 import { admins } from '@/access/admins'
 import { anyone } from '@/access/anyone'
 import { Event } from '@/payload-types'
+import { revalidateTag } from 'next/cache'
 import type { CollectionBeforeReadHook, CollectionConfig } from 'payload'
 
 export const Events: CollectionConfig = {
@@ -88,5 +89,24 @@ export const Events: CollectionConfig = {
         return doc
       },
     ] as CollectionBeforeReadHook<Event>[],
+    afterChange: [
+      async ({ doc, operation }) => {
+        const tags = ['events']
+        if (operation === 'update') tags.push(`event-${doc.id}`)
+
+        for (const tag of tags) {
+          await fetch(
+            `${process.env.NEXT_PUBLIC_URL}/api/revalidate/events?${tag === "events" ? "" : "id="+tag}`,
+            {
+              method: 'PUT'
+            }
+          ).catch((error) => {
+            console.error(`Failed to revalidate tag ${tag}:`, error)
+          })
+        }
+
+        return doc
+      },
+    ],
   },
 }
