@@ -4,7 +4,7 @@ import Link from 'next/link'
 const buttons = [
   { label: 'Magazine', slug: 'magazine' },
   { label: 'DTG Reels', slug: 'dtg-reels' },
-  { label: 'Caricatures', slug: 'caricatures' },
+  { label: 'Informative Posts', slug: 'info-posts' },
 ]
 
 export default function OnlinePresence() {

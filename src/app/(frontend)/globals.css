@@ -42,6 +42,16 @@ a:hover {
   @apply underline;
 }
 
+.prose h1 {
+  @apply text-2xl;
+}
+.prose h2 {
+  @apply text-xl;
+}
+.prose h3 {
+  @apply text-lg;
+}
+
 body {
   @apply font-clash bg-neutral-900 text-amber-50;
 }

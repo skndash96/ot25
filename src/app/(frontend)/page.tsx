@@ -5,6 +5,7 @@ import Experience from '@/client/components/Experience'
 import Header from '@/client/components/Header'
 import Hero from '@/client/components/Hero'
 import Footer from '@/client/components/Footer'
+import Faqs from '@/client/components/Faqs'
 
 export default function Home() {
   return (
@@ -16,6 +17,7 @@ export default function Home() {
         <Events />
         <Experience />
         <Core />
+        <Faqs />
         <Footer />
       </div>
     </>

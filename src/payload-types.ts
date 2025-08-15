@@ -195,6 +195,7 @@ export interface Event {
   id: string;
   title: string;
   thumbnail?: (string | null) | Media;
+  isPublic?: boolean | null;
   type: 'Guest Lecture' | 'Proshow' | 'Workshop' | 'Event' | 'Other';
   date: string;
   time?: string | null;
@@ -422,6 +423,7 @@ export interface MediaSelect<T extends boolean = true> {
 export interface EventsSelect<T extends boolean = true> {
   title?: T;
   thumbnail?: T;
+  isPublic?: T;
   type?: T;
   date?: T;
   time?: T;
