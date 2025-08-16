@@ -10,6 +10,22 @@ export default function EventsList({ events }: { events: Event[] }) {
   const userId = useMemo(() => session?.user.id, [session])
   const [registrations, setRegistrations] = useState<string[]>([])
 
+  const eventsByType = useMemo(
+    () =>
+      events.reduce(
+        (acc, e) => {
+          if (!acc[e.type]) {
+            acc[e.type] = []
+          }
+
+          acc[e.type].push(e)
+          return acc
+        },
+        {} as Record<string, Event[]>,
+      ),
+    [events],
+  )
+
   useEffect(() => {
     if (!userId) {
       return
@@ -31,19 +47,20 @@ export default function EventsList({ events }: { events: Event[] }) {
 
   return (
     <div className="p-4 md:p-8">
-      <h1>
-        <span className="text-3xl font-bold text-amber-400">Events</span>
-      </h1>
-
-      <ul className='mt-4 flex flex-row flex-wrap gap-4'>
-        {events.map((event) => (
-          <EventCard
-            key={event.id}
-            event={event}
-            hasRegistered={registrations.some((reg) => reg === event.id)}
-          />
+        {Object.entries(eventsByType).map(([type, typeEvents]) => (
+          <div key={type} className="mb-8">
+            <h1 className="text-3xl font-bold text-amber-400 capitalize">{type}</h1>
+            <ul className="flex flex-row flex-wrap gap-4">
+              {typeEvents.map((event) => (
+                <EventCard
+                  key={event.id}
+                  event={event}
+                  hasRegistered={registrations.some((reg) => reg === event.id)}
+                />
+              ))}
+            </ul>
+          </div>
         ))}
-      </ul>
     </div>
   )
 }
