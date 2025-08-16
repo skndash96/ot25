@@ -4,6 +4,7 @@ import { useGSAP } from '@gsap/react'
 import { useLoadingContext } from '../context/LoadingContext'
 import gsap from 'gsap'
 import Image from 'next/image'
+import Starfield from './Stars'
 
 export default function Hero() {
   const { completedEndAnimation } = useLoadingContext()
@@ -55,7 +56,9 @@ export default function Hero() {
   }, [completedEndAnimation])
 
   return (
-    <div id="hero" ref={containerRef} className='w-screen h-[100svh] relative bg-amber-500'>
+    <div id="hero" ref={containerRef} className='relative w-screen h-[100svh] bg-amber-500'>
+      <Starfield />
+
       <div className='z-[1] w-fit absolute bottom-[14vh] md:bottom-[10vh] left-[5vw] text-amber-200 flex flex-col gap-0'>
         <h1 ref={wlcmRef} className='font-semibold text-xl sm:text-2xl md:text-3xl lg:text-4xl'>
           Welcome to
