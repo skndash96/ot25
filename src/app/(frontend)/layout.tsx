@@ -4,6 +4,7 @@ import { LoadingContextProvider } from '../../client/context/LoadingContext'
 import LoadingScreen from '@/client/components/LoadingScreen'
 import { ToastContainer } from 'react-toastify'
 import { SessionProvider } from 'next-auth/react'
+import { GoogleAnalytics } from '@next/third-parties/google'
 
 export const metadata: Metadata = {
   title: 'Orientation 25',
@@ -18,13 +19,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <SessionProvider>
-          <LoadingContextProvider>
-            <body className="antialiased">
-              <LoadingScreen />
-              <ToastContainer />
-              {children}
-            </body>
-          </LoadingContextProvider>
+        <LoadingContextProvider>
+          <body className="antialiased">
+            <LoadingScreen />
+            <ToastContainer />
+            {children}
+          </body>
+          <GoogleAnalytics gaId="G-VG10QQ39ZS" />
+        </LoadingContextProvider>
       </SessionProvider>
     </html>
   )
