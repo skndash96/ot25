@@ -157,7 +157,7 @@ export default function EventPage({ event }: { event: Event }) {
         </div>
 
         {/* Description and Rules - Full Width */}
-        <div className="mt-12 space-y-8">
+        <div className="mt-4 md:mt-12 space-y-8">
           {/* Description */}
           {event.description && (
             <div className="bg-neutral-800 rounded-2xl p-6 sm:p-8">

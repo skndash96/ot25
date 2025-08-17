@@ -71,7 +71,15 @@ export default function Hero() {
         </h1>
       </div>
 
-      <Image src="/tower.png" alt="Clocktower" width={1000} height={1000} className="absolute top-0 right-0 bottom-0 left-0 w-full h-full object-cover object-center" />
+      <Image
+        src="/tower.png"
+        alt="Clocktower"
+        width={1000}
+        height={1000}
+        className="absolute top-0 right-0 bottom-0 left-0 w-full h-full object-cover object-center"
+        draggable="false" 
+        priority
+      />
     </div>
   )
 }
