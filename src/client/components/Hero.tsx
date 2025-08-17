@@ -66,7 +66,7 @@ export default function Hero() {
         <h1 ref={otRef} className='font-reckoner font-black text-7xl md:text-[144px] lg:text-[180px]'>
           ORIENTATION
         </h1>
-        <h1 ref={yearRef} className='-mt-4 -translate-x-1 font-black text-xl text-right'>
+        <h1 ref={yearRef} className='-mt-2 md:-mt-4 font-black text-xl text-right'>
           @ NITT
         </h1>
       </div>
@@ -76,7 +76,7 @@ export default function Hero() {
         alt="Clocktower"
         width={1000}
         height={1000}
-        className="absolute top-0 right-0 bottom-0 left-0 w-full h-full object-cover object-center"
+        className="select-none absolute w-full h-full object-cover object-center"
         draggable="false" 
         priority
       />
