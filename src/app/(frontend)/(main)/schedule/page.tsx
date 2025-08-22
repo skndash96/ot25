@@ -79,16 +79,16 @@ export default function SchedulePage() {
   )
 
   return (
-    <div className="min-h-screen bg-gray-900 font-sans">
+    <div className="min-h-screen bg-neutral-900 font-sans">
       {/* Header with Day Navigation */}
-      <div className="bg-gray-800 border-b border-gray-700 sticky top-0 z-[1] backdrop-blur-sm">
+      <div className="bg-neutral-800 border-b border-neutral-700 sticky top-0 z-[1] backdrop-blur-sm">
         <div className="max-w-6xl mx-auto p-4">
           {/* Mobile Navigation */}
           <div className="flex items-center justify-between mb-4 md:hidden">
             <button
               onClick={handlePrevDay}
               disabled={selectedDayIndex === 0 || isAnimating}
-              className="p-2 rounded-lg bg-gray-700 text-gray-300 hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="p-2 rounded-lg bg-neutral-700 text-neutral-300 hover:bg-neutral-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
@@ -98,7 +98,7 @@ export default function SchedulePage() {
                 <Calendar className="w-5 h-5" />
                 {selectedDateFormatted}
               </h1>
-              <p className="text-sm text-gray-400">{selectedDayName}</p>
+              <p className="text-sm text-neutral-400">{selectedDayName}</p>
               {isToday && (
                 <span className="inline-block mt-1 px-2 py-1 bg-amber-500 text-black text-xs font-medium rounded-full">
                   TODAY
@@ -109,7 +109,7 @@ export default function SchedulePage() {
             <button
               onClick={handleNextDay}
               disabled={selectedDayIndex === scheduleData.length - 1 || isAnimating}
-              className="p-2 rounded-lg bg-gray-700 text-gray-300 hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="p-2 rounded-lg bg-neutral-700 text-neutral-300 hover:bg-neutral-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               <ChevronRight className="w-5 h-5" />
             </button>
@@ -120,13 +120,13 @@ export default function SchedulePage() {
             <div className="flex items-center gap-4 mb-4">
               <h1 className="text-2xl font-medium text-white flex items-center gap-3">
                 <Calendar className="w-6 h-6 text-amber-400" />
-                Event Schedule
+                OT&apos;25 Schedule
               </h1>
             </div>
 
             <div
               ref={tabsContainerRef}
-              className="flex gap-2 overflow-x-auto scrollbar-thin scrollbar-track-gray-700 scrollbar-thumb-gray-600"
+              className="flex gap-2 overflow-x-auto scrollbar-thin scrollbar-track-neutral-700 scrollbar-thumb-neutral-600"
             >
               {scheduleData.map((day, index) => {
                 const isDayToday = day.fullDate === today
@@ -141,7 +141,7 @@ export default function SchedulePage() {
                     className={`flex-shrink-0 px-4 py-3 rounded-lg transition-all duration-200 relative ${
                       isSelected
                         ? 'bg-amber-500 text-black font-medium shadow-lg'
-                        : 'bg-gray-700 text-gray-300 hover:bg-gray-600 hover:text-white'
+                        : 'bg-neutral-700 text-neutral-300 hover:bg-neutral-600 hover:text-white'
                     } ${isAnimating ? 'cursor-not-allowed' : 'cursor-pointer'}`}
                   >
                     <div className="text-sm font-medium">{dayFormatted}</div>
@@ -166,9 +166,9 @@ export default function SchedulePage() {
       <div className="max-w-md mx-auto p-6">
         <div className="mb-6 md:hidden">
           <div className="text-center">
-            <div className="inline-flex items-center gap-2 px-3 py-2 bg-gray-800 rounded-lg">
+            <div className="inline-flex items-center gap-2 px-3 py-2 bg-neutral-800 rounded-lg">
               <div className="w-2 h-2 bg-amber-400 rounded-full"></div>
-              <span className="text-gray-300 text-sm">{selectedDay.items.length} events</span>
+              <span className="text-neutral-300 text-sm">{selectedDay.items.length} events</span>
             </div>
           </div>
         </div>
@@ -189,7 +189,7 @@ export default function SchedulePage() {
               >
                 {/* Colored Dot */}
                 <div
-                  className={`relative z-10 w-6 h-6 ${getEventColor(itemIndex)} rounded-full flex-shrink-0 shadow-lg group-hover:scale-110 transition-all duration-200 ring-4 ring-gray-900`}
+                  className={`relative z-10 w-6 h-6 ${getEventColor(itemIndex)} rounded-full flex-shrink-0 shadow-lg group-hover:scale-110 transition-all duration-200 ring-4 ring-neutral-900`}
                 >
                   {/* Pulse effect for current time events */}
                   {isToday && (
@@ -201,20 +201,20 @@ export default function SchedulePage() {
 
                 {/* Content */}
                 <div className="ml-4 flex-1 pb-2">
-                  <div className="bg-gray-800/50 rounded-lg p-4 group-hover:bg-gray-800/70 transition-colors duration-200 border border-gray-700/50 group-hover:border-gray-600/50">
+                  <div className="bg-neutral-800/50 rounded-lg p-4 group-hover:bg-neutral-800/70 transition-colors duration-200 border border-neutral-700/50 group-hover:border-neutral-600/50">
                     <h3 className="text-white font-medium text-lg leading-tight mb-3 group-hover:text-amber-200 transition-colors duration-200">
                       {item.title}
                     </h3>
 
                     <div className="space-y-2">
-                      <div className="flex items-center text-gray-400 text-sm">
+                      <div className="flex items-center text-neutral-400 text-sm">
                         <Clock className="w-4 h-4 mr-2 flex-shrink-0" />
                         <span>{item.time}</span>
                       </div>
 
-                      <div className="flex items-center text-gray-400 text-sm">
+                      <div className="flex items-center text-neutral-400 text-sm">
                         <MapPin className="w-4 h-4 mr-2 flex-shrink-0" />
-                        <span>@ {item.location}</span>
+                        <span>{item.location}</span>
                       </div>
                     </div>
                   </div>

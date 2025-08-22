@@ -3,8 +3,8 @@ import React from 'react'
 import { useGSAP } from '@gsap/react'
 import { useLoadingContext } from '../context/LoadingContext'
 import gsap from 'gsap'
-import Image from 'next/image'
 import Starfield from './Stars'
+import HeroImage from './HeroImage'
 
 export default function Hero() {
   const { completedEndAnimation } = useLoadingContext()
@@ -12,28 +12,6 @@ export default function Hero() {
   const wlcmRef = React.useRef<HTMLHeadingElement>(null)
   const otRef = React.useRef<HTMLHeadingElement>(null)
   const yearRef = React.useRef<HTMLHeadingElement>(null)
-
-  // Better off without this
-  // useGSAP(() => {  
-  //   gsap.set([wlcmRef.current, otRef.current, yearRef.current], {
-  //     yPercent: 100,
-  //     opacity: 0
-  //   })
-
-  //   gsap.to([wlcmRef.current, otRef.current, yearRef.current], {
-  //     y: -100,
-  //     opacity: 0,
-  //     duration: 2,
-  //     ease: 'power3.in',
-  //     stagger: 0.2,
-  //     scrollTrigger: {
-  //       trigger: containerRef.current,
-  //       start: 'bottom 70%',
-  //       end: 'bottom 40%',
-  //       scrub: true,
-  //     }
-  //   })
-  // }, [])
 
   useGSAP(() => {
     if (!completedEndAnimation) {
@@ -71,15 +49,7 @@ export default function Hero() {
         </h1>
       </div>
 
-      <Image
-        src="/tower.png"
-        alt="Clocktower"
-        width={1000}
-        height={1000}
-        className="select-none absolute w-full h-full object-cover object-center"
-        draggable="false" 
-        priority
-      />
+      <HeroImage />
     </div>
   )
 }

@@ -73,7 +73,7 @@ export default function Experience() {
             {[0, 1, 2, 3].map((row) => (
               <li key={row} className={`mt-4 block ${row === 3 ? "md:hidden" : ""}`}>
                 <Image
-                  src="https://picsum.photos/300/400"
+                  src="/pseudopic.jpeg"
                   width={300}
                   height={400}
                   alt={`Exp ${col}-${row}`}

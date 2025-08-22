@@ -3,6 +3,7 @@ import React from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap, { Power1 } from 'gsap'
 import { SplitText } from 'gsap/SplitText'
+import Image from 'next/image'
 
 export default function About() {
   const containerRef = React.useRef<HTMLDivElement>(null)
@@ -69,7 +70,8 @@ export default function About() {
       })
       .fromTo(lineSplit.lines, {
         yPercent: 100,
-        opacity: 0
+        opacity: 0,
+        duration: 1
       }, {
         duration: 0.6,
         yPercent: 0,
@@ -100,7 +102,9 @@ export default function About() {
           </p>
         </div>
 
-        <div ref={elevateDotRef} className='scale-0 self-end md:self-start md:mt-12 md:mr-12 w-full max-w-[30vw] aspect-square rounded-full bg-amber-500'></div>
+        <div ref={elevateDotRef} className='scale-0 self-end md:self-start md:mt-12 md:mr-12 w-full max-w-[30vw] aspect-square rounded-full bg-amber-500 border-2 border-amber-500'>
+          <Image className='rounded-full' src="/insta_dp.webp" alt="Logo" fill />
+        </div>
       </div>
     </div>
   )

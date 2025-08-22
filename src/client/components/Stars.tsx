@@ -1,20 +1,20 @@
 'use client'
 import React, { useEffect, useRef } from 'react'
-import { params, Star, Dot } from '@/client/lib/stars';
+import { params, Star, Dot } from '@/client/lib/stars'
 
 interface StarfieldState {
-  WIDTH: number;
-  HEIGHT: number;
-  mouseX: number;
-  mouseY: number;
-  mouseMoving: boolean;
-  mouseMoveChecker: ReturnType<typeof setTimeout> | null;
-  stars: Star[];
-  dots: (Dot | null)[];
+  WIDTH: number
+  HEIGHT: number
+  mouseX: number
+  mouseY: number
+  mouseMoving: boolean
+  mouseMoveChecker: ReturnType<typeof setTimeout> | null
+  stars: Star[]
+  dots: (Dot | null)[]
 }
 
 export default function Starfield() {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const stateRef = useRef<StarfieldState>({
     WIDTH: 0,
     HEIGHT: 0,
@@ -24,89 +24,112 @@ export default function Starfield() {
     mouseMoveChecker: null,
     stars: [],
     dots: [],
-  });
+  })
 
   useEffect(() => {
-    const canvas = canvasRef.current!;
-    const ctx = canvas.getContext('2d')!;
-    const state = stateRef.current;
+    const canvas = canvasRef.current!
+    const ctx = canvas.getContext('2d')!
 
     const setCanvasSize = () => {
-      state.WIDTH = document.documentElement.clientWidth;
-      state.HEIGHT = document.documentElement.clientHeight;
-      canvas.width = state.WIDTH;
-      canvas.height = state.HEIGHT;
-    };
+      const state = stateRef.current
+      const rect = canvas.parentElement!.getBoundingClientRect()
+
+      state.WIDTH = rect.width
+      state.HEIGHT = rect.height
+
+      canvas.width = state.WIDTH
+      canvas.height = state.HEIGHT
+    }
 
     const drawIfMouseMoving = () => {
-      if (!state.mouseMoving) return;
-      if (state.dots.length === 0) {
-        state.dots[0] = new Dot(0, state.mouseX, state.mouseY, ctx, state);
-        state.dots[0].draw();
-        return;
+      const state = stateRef.current
+      if (!state.mouseMoving) {
+        return
       }
-      const previousDot = state.dots[state.dots.length - 1];
-      if (!previousDot) return;
-      const diffX = Math.abs(previousDot.x - state.mouseX);
-      const diffY = Math.abs(previousDot.y - state.mouseY);
-      if (diffX < 2 || diffY < 2) return;
-      const xVariation = (Math.random() > 0.5 ? -1 : 1) * Math.floor(Math.random() * params.maxDistFromCursor) + 1;
-      const yVariation = (Math.random() > 0.5 ? -1 : 1) * Math.floor(Math.random() * params.maxDistFromCursor) + 1;
-      const newDot = new Dot(state.dots.length, state.mouseX + xVariation, state.mouseY + yVariation, ctx, state);
-      state.dots.push(newDot);
-      newDot.draw();
-      newDot.link();
-    };
+      if (state.dots.length === 0) {
+        state.dots[0] = new Dot(0, state.mouseX, state.mouseY, ctx, state)
+        state.dots[0].draw()
+        return
+      }
+      const previousDot = state.dots[state.dots.length - 1]
+      if (!previousDot) return
+      const diffX = Math.abs(previousDot.x - state.mouseX)
+      const diffY = Math.abs(previousDot.y - state.mouseY)
+      if (diffX < 2 || diffY < 2) return
+      const xVariation =
+        (Math.random() > 0.5 ? -1 : 1) * Math.floor(Math.random() * params.maxDistFromCursor) + 1
+      const yVariation =
+        (Math.random() > 0.5 ? -1 : 1) * Math.floor(Math.random() * params.maxDistFromCursor) + 1
+      const newDot = new Dot(
+        state.dots.length,
+        state.mouseX + xVariation,
+        state.mouseY + yVariation,
+        ctx,
+        state,
+      )
+      state.dots.push(newDot)
+      newDot.draw()
+      newDot.link()
+    }
 
     const animate = () => {
-      ctx.clearRect(0, 0, state.WIDTH, state.HEIGHT);
-      state.stars.forEach((s) => s.move());
-      state.dots.forEach((d) => d?.move());
-      drawIfMouseMoving();
-      requestAnimationFrame(animate);
-    };
+      const state = stateRef.current
+      ctx.clearRect(0, 0, state.WIDTH, state.HEIGHT)
+      state.stars.forEach((s) => s.move())
+      state.dots.forEach((d) => d?.move())
+      drawIfMouseMoving()
+      requestAnimationFrame(animate)
+    }
 
     const init = () => {
-      ctx.strokeStyle = 'white';
-      ctx.shadowColor = 'white';
-      const initStarsPopulation = 80;
+      const state = stateRef.current
+      ctx.strokeStyle = 'white'
+      ctx.shadowColor = 'white'
+      const initStarsPopulation = 80
       for (let i = 0; i < initStarsPopulation; i++) {
-        state.stars[i] = new Star(i, Math.floor(Math.random() * state.WIDTH), Math.floor(Math.random() * state.HEIGHT), ctx, state.HEIGHT);
+        state.stars[i] = new Star(
+          i,
+          Math.floor(Math.random() * state.WIDTH),
+          Math.floor(Math.random() * state.HEIGHT),
+          ctx,
+          state.HEIGHT,
+        )
       }
-      ctx.shadowBlur = 0;
-      animate();
-    };
+      ctx.shadowBlur = 0
+      animate()
+    }
 
-    setCanvasSize();
-    init();
+    setCanvasSize()
+    init()
 
     const handleMouseMove = (e: MouseEvent) => {
-      state.mouseMoving = true;
-      
-      // Get canvas bounding rect to account for scrolling
-      const rect = canvas.getBoundingClientRect();
-      state.mouseX = e.clientX - rect.left;
-      state.mouseY = e.clientY - rect.top;
-      
-      if (state.mouseMoveChecker) clearTimeout(state.mouseMoveChecker);
-      state.mouseMoveChecker = setTimeout(() => {
-        state.mouseMoving = false;
-      }, 100);
-    };
+      const state = stateRef.current
+      state.mouseMoving = true
 
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('resize', setCanvasSize);
+      const rect = canvas.getBoundingClientRect()
+      state.mouseX = e.clientX - rect.left
+      state.mouseY = e.clientY - rect.top
+
+      if (state.mouseMoveChecker) clearTimeout(state.mouseMoveChecker)
+      state.mouseMoveChecker = setTimeout(() => {
+        state.mouseMoving = false
+      }, 100)
+    }
+
+    window.addEventListener('mousemove', handleMouseMove)
+    window.addEventListener('resize', setCanvasSize)
 
     return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('resize', setCanvasSize);
-      if (state.mouseMoveChecker) clearTimeout(state.mouseMoveChecker);
-    };
-  }, []);
+      const state = stateRef.current
+      window.removeEventListener('mousemove', handleMouseMove)
+      window.removeEventListener('resize', setCanvasSize)
+      if (state.mouseMoveChecker) clearTimeout(state.mouseMoveChecker)
+    }
+  }, [])
 
   return (
-    <div className='absolute inset-0'>
-      <canvas ref={canvasRef} className='block' />
+    <div className="absolute inset-0">
+      <canvas ref={canvasRef} className="block" />
     </div>
-  );
+  )
 }
