@@ -62,7 +62,7 @@ export default function Magazine() {
           start: () => (index + 1) * (window.innerHeight * 0.5),
           end: () => (index + 2) * (window.innerHeight * 0.5),
           scrub: 1,
-          onUpdate: (self) => {
+          onUpdate: () => {
             pages.forEach((p, i) => {
               if (i < index) {
                 gsap.set(p, { zIndex: 1 })

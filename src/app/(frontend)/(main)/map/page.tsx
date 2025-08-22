@@ -82,7 +82,6 @@ export default function Map() {
 
     // Calculate zoom position
     if (imgRef.current && containerRef.current) {
-      const rect = imgRef.current.getBoundingClientRect()
       const containerRect = containerRef.current.getBoundingClientRect()
 
       const zoomScale = 3 // 3x zoom

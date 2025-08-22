@@ -1,7 +1,7 @@
 // app/faqs/page.tsx or inside your component
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import gsap from "gsap";
 import { faqData } from "@/client/utils/faqs"

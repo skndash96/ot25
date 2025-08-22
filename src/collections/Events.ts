@@ -1,7 +1,6 @@
 import { admins } from '@/access/admins'
 import { anyone } from '@/access/anyone'
 import { Event } from '@/payload-types'
-import { revalidateTag } from 'next/cache'
 import type { CollectionBeforeReadHook, CollectionConfig } from 'payload'
 
 export const Events: CollectionConfig = {

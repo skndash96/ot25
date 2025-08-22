@@ -29,9 +29,9 @@ export default function Starfield() {
   useEffect(() => {
     const canvas = canvasRef.current!
     const ctx = canvas.getContext('2d')!
+    const state = stateRef.current
 
     const setCanvasSize = () => {
-      const state = stateRef.current
       const rect = canvas.parentElement!.getBoundingClientRect()
 
       state.WIDTH = rect.width
@@ -42,7 +42,6 @@ export default function Starfield() {
     }
 
     const drawIfMouseMoving = () => {
-      const state = stateRef.current
       if (!state.mouseMoving) {
         return
       }
@@ -73,7 +72,6 @@ export default function Starfield() {
     }
 
     const animate = () => {
-      const state = stateRef.current
       ctx.clearRect(0, 0, state.WIDTH, state.HEIGHT)
       state.stars.forEach((s) => s.move())
       state.dots.forEach((d) => d?.move())
@@ -82,7 +80,6 @@ export default function Starfield() {
     }
 
     const init = () => {
-      const state = stateRef.current
       ctx.strokeStyle = 'white'
       ctx.shadowColor = 'white'
       const initStarsPopulation = 80
@@ -103,7 +100,6 @@ export default function Starfield() {
     init()
 
     const handleMouseMove = (e: MouseEvent) => {
-      const state = stateRef.current
       state.mouseMoving = true
 
       const rect = canvas.getBoundingClientRect()
@@ -120,7 +116,6 @@ export default function Starfield() {
     window.addEventListener('resize', setCanvasSize)
 
     return () => {
-      const state = stateRef.current
       window.removeEventListener('mousemove', handleMouseMove)
       window.removeEventListener('resize', setCanvasSize)
       if (state.mouseMoveChecker) clearTimeout(state.mouseMoveChecker)

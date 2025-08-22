@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useLoadingContext } from '../context/LoadingContext'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
