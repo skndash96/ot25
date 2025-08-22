@@ -13,7 +13,6 @@ if (typeof window !== 'undefined') {
 
 export default function Magazine() {
   const containerRef = useRef<HTMLDivElement>(null)
-  const mouseRef = useRef<HTMLDivElement>(null)
 
   useGSAP(() => {
     if (!containerRef.current) return
@@ -23,7 +22,8 @@ export default function Magazine() {
     const fronts = container.querySelectorAll('.front') as NodeListOf<HTMLElement>
     const backs = container.querySelectorAll('.back') as NodeListOf<HTMLElement>
 
-    const totalScrollHeight = (magazinePages.length + 2) * window.innerHeight * 1 + 200 // Extra 200vh
+    // Dynamic scroll height: each page needs one viewport height to flip
+    const totalScrollHeight = magazinePages.length * window.innerHeight
 
     ScrollTrigger.create({
       trigger: container,
@@ -39,43 +39,57 @@ export default function Magazine() {
     gsap.set(backs, { rotationY: -180 })
     gsap.set([...fronts, ...backs], { backfaceVisibility: 'hidden' })
 
-    gsap.to(mouseRef.current, {
-      opacity: 0,
-      scrollTrigger: {
-        trigger: document.body,
-        start: 'top top',
-        end: `+=${totalScrollHeight * 0.5}`, // 50% of total scroll
-        scrub: 1,
-        onComplete: () => {
-          if (mouseRef.current) {
-            gsap.set(mouseRef.current, { display: 'none' })
-          }
-        },
-      },
+    // Set initial z-indices properly
+    pages.forEach((page, index) => {
+      gsap.set(page, { zIndex: magazinePages.length - index })
     })
 
     pages.forEach((page, index) => {
+      let hasFlipped = false
+
       gsap.to(page, {
         rotationY: -180,
         scrollTrigger: {
           trigger: container,
-          start: () => (index + 1) * (window.innerHeight * 0.5),
-          end: () => (index + 2) * (window.innerHeight * 0.5),
+          start: () => index * window.innerHeight,
+          end: () => (index + 1) * window.innerHeight,
           scrub: 1,
-          onUpdate: () => {
+          onUpdate: (self) => {
+            const progress = self.progress
+
+            // Update z-indices for all pages based on current state
             pages.forEach((p, i) => {
               if (i < index) {
-                gsap.set(p, { zIndex: 1 })
+                // Already flipped pages - behind everything
+                gsap.set(p, { zIndex: -(magazinePages.length - i) })
               } else if (i === index) {
-                gsap.set(p, { zIndex: magazinePages.length + 2 })
+                // Currently flipping page
+                if (progress > 0.5) {
+                  // More than halfway flipped - behind remaining pages but above already flipped
+                  gsap.set(p, { zIndex: 0 })
+                  hasFlipped = true
+                } else {
+                  // Less than halfway - above all other pages
+                  gsap.set(p, { zIndex: magazinePages.length + 10 })
+                }
               } else {
-                gsap.set(p, { zIndex: magazinePages.length - i + 1 })
+                // Unflipped pages - maintain original order above flipped pages
+                gsap.set(p, { zIndex: magazinePages.length - i })
               }
             })
-          },
-          onComplete: () => {
-            // After flip is complete, set proper z-index for flipped page
-            gsap.set(page, { zIndex: 1 })
+
+            if (progress >= 0.99 && hasFlipped) {
+              console.log('Fully flipped page', index + 1)
+            }
+
+            // Handle reverse scrolling
+            if (progress <= 0.01 && hasFlipped) {
+              hasFlipped = false
+              // Reset all z-indices when unflipping
+              pages.forEach((p, i) => {
+                gsap.set(p, { zIndex: magazinePages.length - i })
+              })
+            }
           },
         },
         transformOrigin: '0% 100%',
@@ -93,27 +107,30 @@ export default function Magazine() {
       <div className="grow p-4 md:p-8 flex items-center justify-center">
         <div
           ref={containerRef}
-          className="relative portrait:w-full portrait:max-w-3xl portrait:h-auto landscape:h-[65vh] landscape:w-auto mx-auto aspect-[3/2] bg-neutral-600"
+          className="relative portrait:w-full portrait:max-w-3xl portrait:h-auto landscape:h-[65vh] landscape:w-auto mx-auto aspect-[3/2]"
           style={{
             WebkitFontSmoothing: 'antialiased',
           }}
         >
           {/* The Magazine text */}
-          <div className="absolute left-0 right-1/2 inset-y-0 flex items-center justify-center font-sans text-green-600 text-2xl font-bold z-0">
-            The Magazine
+          <div style={{
+            zIndex: -(magazinePages.length + 1)
+          }} className="absolute left-0 right-1/2 inset-y-0 flex items-center justify-center font-sans text-white text-2xl font-bold z-0">
+            <div className="animate-bounce">
+              <div className="text-xs md:text-sm mb-1 md:mb-2">Scroll to flip pages</div>
+              <div className="w-5 md:w-6 h-8 md:h-10 border-2 border-white rounded-full mx-auto">
+                <div className="w-1 h-2 md:h-3 bg-white rounded-full mx-auto mt-1 md:mt-2 animate-pulse"></div>
+              </div>
+            </div>
           </div>
 
           {/* By OT'25 text */}
-          <div className="absolute left-1/2 right-0 inset-y-0 flex items-center justify-center font-sans text-green-600 text-2xl font-bold z-0">
+          {/* <div className="absolute left-1/2 right-0 inset-y-0 flex items-center justify-center font-sans text-white text-2xl font-bold z-0">
             By OT&apos;25
-          </div>
+          </div> */}
 
           {magazinePages.map((page, index) => (
-            <div
-              key={index}
-              className="page absolute left-1/2 right-0 inset-y-0 bg-red-500 border-2 border-solid border-blue-400"
-              style={{ zIndex: magazinePages.length - index + 1 }} // Start with proper stacking
-            >
+            <div key={index} className="page absolute left-1/2 right-0 inset-y-0 bg-neutral-600">
               <div className="front absolute inset-0 flex items-center justify-center text-white text-xl font-bold shadow-lg">
                 <Image
                   src={page.frontBg}
@@ -123,9 +140,9 @@ export default function Magazine() {
                   sizes="(max-width: 768px) 100vw, 50vw"
                   priority={index < 2}
                 />
-                <div className="relative z-10 bg-black bg-opacity-50 px-4 py-2 rounded">
+                {/* <div className="relative z-10 bg-black bg-opacity-50 px-4 py-2 rounded">
                   {page.front}
-                </div>
+                </div> */}
               </div>
               <div className="back absolute inset-0 flex items-center justify-center text-white text-xl font-bold shadow-lg overflow-hidden">
                 <Image
@@ -136,25 +153,12 @@ export default function Magazine() {
                   sizes="(max-width: 768px) 100vw, 50vw"
                   priority={index < 2}
                 />
-                <div className="relative z-10 bg-black bg-opacity-50 px-4 py-2 rounded">
+                {/* <div className="relative z-10 bg-black bg-opacity-50 px-4 py-2 rounded">
                   {page.back}
-                </div>
+                </div> */}
               </div>
             </div>
           ))}
-        </div>
-      </div>
-
-      {/* Scroll indicator */}
-      <div
-        ref={mouseRef}
-        className="fixed bottom-4 md:bottom-8 right-4 md:right-8 text-white text-center z-[2]"
-      >
-        <div className="animate-bounce">
-          <div className="text-xs md:text-sm mb-1 md:mb-2">Scroll to flip pages</div>
-          <div className="w-5 md:w-6 h-8 md:h-10 border-2 border-white rounded-full mx-auto">
-            <div className="w-1 h-2 md:h-3 bg-white rounded-full mx-auto mt-1 md:mt-2 animate-pulse"></div>
-          </div>
         </div>
       </div>
     </div>
