@@ -1,17 +1,16 @@
 'use client'
 import Footer from '@/client/components/Footer'
+import { mapData as places } from '@/client/utils/map'
 import Image from 'next/image'
 import React, { useState, useEffect, MouseEvent, useRef, useMemo } from 'react'
 
 interface Place {
   name: string
-  description: string
   x: number // pixel coord at original 1920 width
   y: number // pixel coord at original 1080 height
 }
 
 export default function Map() {
-  const [places, setPlaces] = useState<Place[]>([])
   const [selectedPlace, setSelectedPlace] = useState<Place | null>(null)
   const [isZoomed, setIsZoomed] = useState(false)
   const [showDetails, setShowDetails] = useState(false)
@@ -41,15 +40,6 @@ export default function Map() {
   const ORIGINAL_HEIGHT = 1080
 
   useEffect(() => {
-    const stored = localStorage.getItem('mapPlaces')
-    if (stored) {
-      try {
-        setPlaces(JSON.parse(stored) as Place[])
-      } catch {
-        console.error('Invalid data in localStorage')
-      }
-    }
-
     const handleResize = () => {
       if (imgRef.current) {
         setDimensions({
@@ -102,13 +92,16 @@ export default function Map() {
 
   const handleEscape = () => {
     setShowDetails(false)
-    setIsZoomed(false)
     setSelectedPlace(null)
-
+    
     if (imgRef.current) {
-      imgRef.current.style.transform = 'scale(1)'
       imgRef.current.style.transition = 'transform 0.5s ease-in-out'
+      imgRef.current.style.transform = 'scale(1)'
     }
+    
+    setTimeout(() => {
+      setIsZoomed(false)
+    }, 500)
   }
 
   const handleMapClick = (event: MouseEvent) => {
@@ -162,18 +155,18 @@ export default function Map() {
             <div
               key={i}
               className={`absolute transition-opacity duration-200 cursor-pointer hover:scale-125 ${
-                isZoomed && !isSelected ? 'opacity-30' : 'opacity-100'
+                isZoomed ? 'opacity-0' : 'opacity-100'
               }`}
               style={{
                 left: p.x,
                 top: p.y,
                 transform: 'translate(-50%, -100%)',
-                zIndex: isSelected ? 20 : 10,
+                zIndex: isSelected ? 2 : 1,
                 fontSize: isSelected ? '24px' : '16px',
                 transition: 'all 0.3s ease',
               }}
               data-testid={`place-${Buffer.from(p.name).toString('base64')}`}
-              title={!isZoomed ? `${p.name}: ${p.description}` : ''}
+              title={!isZoomed ? p.name : ''}
               onClick={(e) => handlePlaceClick(p, e)}
             >
               📍
@@ -185,7 +178,7 @@ export default function Map() {
       {/* Details Panel */}
       {selectedPlace && (
         <div
-          className={`fixed bottom-0 left-1/2 -translate-x-1/2 w-full text-white p-6 shadow-lg z-[1] after:absolute after:inset-x-0 after:top-0 after:h-[5vh] after:bg-gradient-to-t bg-black after:-translate-y-full after:from-black after:via-black after:to-transparent transition-all duration-300 ${
+          className={`fixed bottom-0 left-1/2 -translate-x-1/2 w-full text-white p-6 shadow-lg z-[5] after:absolute after:inset-x-0 after:top-0 after:h-[20vh] after:bg-gradient-to-t bg-black after:-translate-y-full after:from-black after:via-black after:to-transparent transition-all duration-300 ${
             showDetails ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'
           }`}
         >
@@ -199,7 +192,6 @@ export default function Map() {
               ×
             </button>
           </div>
-          <p className="mb-4 text-lg text-gray-200 text-center leading-relaxed">{selectedPlace.description}</p>
         </div>
       )}
 

@@ -17,7 +17,7 @@ export default function EventCard({
     'https://picsum.photos/400/500'
 
   return (
-    <li className="w-fit flex flex-col gap-3 group bg-neutral-800 border border-neutral-700 rounded-2xl p-4 shadow-xl hover:shadow-2xl transition-all duration-300 hover:border-amber-400/50">
+    <li className="w-fit flex flex-col shrink-0 gap-3 group bg-neutral-800 border border-neutral-700 rounded-2xl p-4 shadow-xl hover:shadow-2xl transition-all duration-300 hover:border-amber-400/50">
       <div className="flex-shrink-0 w-fit mx-auto relative">
         <div className="w-full max-w-60 aspect-[0.8] relative rounded-lg overflow-hidden bg-neutral-700 border border-neutral-600">
           <Image

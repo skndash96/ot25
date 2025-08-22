@@ -1,3 +1,4 @@
+import ComingSoon from "@/client/components/ComingSoon"
 import EventsList from "@/client/components/events/EventsList"
 import payloadConfig from "@/payload.config"
 import { getPayload } from "payload"
@@ -5,6 +6,10 @@ import { getPayload } from "payload"
 export const revalidate = 1800
 
 export default async function EventsPage() {
+  return (
+    <ComingSoon />
+  )
+
   try {
     const payload = await getPayload({
       config: payloadConfig

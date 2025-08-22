@@ -50,10 +50,10 @@ export default function EventsList({ events }: { events: Event[] }) {
         {Object.entries(eventsByType).map(([type, typeEvents]) => (
           <div key={type} className="mb-8">
             <h1 className="text-3xl font-bold text-amber-400 capitalize">{type}</h1>
-            <ul className="flex flex-row flex-wrap gap-4">
-              {typeEvents.map((event) => (
+            <ul className="flex flex-row overflow-auto gap-4">
+              {typeEvents.concat(typeEvents).map((event, idx) => (
                 <EventCard
-                  key={event.id}
+                  key={idx}
                   event={event}
                   hasRegistered={registrations.some((reg) => reg === event.id)}
                 />

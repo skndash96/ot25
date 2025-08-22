@@ -2,6 +2,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Clock, MapPin, ChevronLeft, ChevronRight, Calendar } from 'lucide-react'
 import { scheduleData, getEventColor } from '@/client/utils/schedule'
+import ComingSoon from '@/client/components/ComingSoon'
 
 const getCurrentDay = () => {
   const today = new Date()
@@ -76,6 +77,10 @@ export default function SchedulePage() {
 
   const { date: selectedDateFormatted, dayName: selectedDayName } = getFormattedDate(
     selectedDay.fullDate,
+  )
+
+  return (
+    <ComingSoon />
   )
 
   return (

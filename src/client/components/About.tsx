@@ -98,7 +98,7 @@ export default function About() {
           </h1>
 
           <p ref={paraRef} className='mt-8 text-xl sm:text-2xl md:text-4xl md:w-[70vw] w-[85vw]'>
-            Tired of sleepless nights and countless hours of practice and tests? It&apos;s time to let loose and dive into the excitement of a new adventure! Welcome to NIT Trichy, where Orientation meets Celebration! Get ready to kickstart your college journey with fun, friends, and loads of unforgettable memories.
+            Pulled through endless exams and sleepless nights? Now it&apos;s time to break free and step into a whole new adventure! At NIT Trichy, Orientation transforms into a Celebration—kickstarting your college journey with fun, friends, and memories that last a lifetime. Million memories awaits.
           </p>
         </div>
 

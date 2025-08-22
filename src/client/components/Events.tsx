@@ -27,7 +27,7 @@ export default function Events() {
         </div>
         <div className="col-span-4 row-span-4 row-start-5 flex flex-col gap-4">
           <p className='text-neutral-900 text-sm sm:text-xl md:text-xl lg:text-2xl xl:text-3xl'>
-            Tired of sleepless nights and countless hours of practice and tests? It&apos;s time to let loose and dive into the excitement of a new adventure! Welcome to NIT Trichy, where Orientation meets Celebration!
+            Get ready for nights filled with magic, music, and dazzling lights! Our ProShows promise electrifying performances and unforgettable moments you won&apos;t want to miss.
             <span className='max-lg:hidden'>
               {' '} Get ready to kickstart your college journey with fun, friends, and loads of unforgettable memories.
             </span>
