@@ -36,7 +36,7 @@ export default function DTGItem({
 
         {/* Right face (spine) */}
         <div className="face right">
-          <div className="spine-text">Welcome To</div>
+          <div className="spine-text">Welcome Freshers</div>
         </div>
       </div>
 
@@ -72,25 +72,25 @@ export default function DTGItem({
           width: 144px;
           height: 20px;
           background: #8b4513;
-          transform: rotateX(90deg) translateZ(9px);
+          transform: rotateX(90deg) translateZ(10px);
         }
 
         .bottom {
           width: 144px;
           height: 20px;
           background: #8b4513;
-          transform: rotateX(-90deg) translateZ(128px);
+          transform: rotateX(-90deg) translateZ(130px);
         }
 
         .left,
         .right {
-          background: linear-gradient(180deg, #6f4e37 0%, #8b4513 50%, #6f4e37 100%);
+          background: #000000;
         }
 
         .left {
           width: 20px;
           height: 256px;
-          transform: rotateY(-90deg) translateZ(9px);
+          transform: rotateY(-90deg) translateZ(10px);
           font-size: 12px;
           color: #f4f1de;
           font-weight: bold;
@@ -99,7 +99,7 @@ export default function DTGItem({
         .right {
           width: 20px;
           height: 256px;
-          transform: rotateY(90deg) translateZ(132px);
+          transform: rotateY(90deg) translateZ(134px);
           font-size: 12px;
           color: #f4f1de;
           font-weight: bold;

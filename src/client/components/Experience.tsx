@@ -4,6 +4,52 @@ import gsap from 'gsap'
 import Image from 'next/image'
 import React from 'react'
 
+const images = [
+  // 1 2 0 x 0 1 2 3
+  [
+    {
+      href: "/exp/19.jpg"
+    },
+    {
+      href: "/exp/18.jpg"
+    },
+    {
+      href: "/exp/14.png"
+    },
+    {
+      href: "/exp/4.png"
+    },
+  ],
+  [
+    {
+      href: "/exp/17.jpg"
+    },
+    {
+      href: "/exp/15.png"
+    },
+    {
+      href: "/exp/12.png"
+    },
+    {
+      href: "/exp/8.png"
+    } 
+  ],
+  [
+    {
+      href: "/exp/16.jpg"
+    },
+    {
+      href: "/exp/10.png"
+    },
+    {
+      href: "/exp/11.png"
+    },
+    {
+      href: "/exp/15.png"
+    } 
+  ]
+]
+
 export default function Experience() {
   const containerRef = React.useRef<HTMLDivElement>(null)
   const ulRefs = React.useRef<(HTMLUListElement | null)[]>([])
@@ -68,16 +114,16 @@ export default function Experience() {
         <div className='z-10 absolute top-0 left-0 h-[8vh] w-full bg-gradient-to-b from-neutral-900 to-transparent'></div>
         <div className='z-10 absolute bottom-0 left-0 h-[8vh] w-full bg-gradient-to-t from-neutral-900 to-transparent'></div>
 
-        {[1, 2, 0].map((col) => (
-          <ul ref={el => { ulRefs.current[col] = el }} key={col} className={`min-h-fit h-fit ${col === 0 ? "max-md:hidden" : ""}`}>
-            {[0, 1, 2, 3].map((row) => (
-              <li key={row} className={`mt-4 block ${row === 3 ? "md:hidden" : ""}`}>
+        {images.map((list, listIdx) => (
+          <ul ref={el => { ulRefs.current[listIdx] = el }} key={list[0].href} className={`min-h-fit h-fit ${listIdx === 0 ? "max-md:hidden" : ""}`}>
+            {list.map((img, idx) => (
+              <li key={idx} className={`mt-4 block ${idx === 3 ? "md:hidden" : ""}`}>
                 <Image
-                  src="/pseudopic.jpeg"
+                  src={img.href}
                   width={300}
                   height={400}
-                  alt={`Exp ${col}-${row}`}
-                  className='hue-rotate-30 rounded-xl'
+                  alt={`Exp ${idx}`}
+                  className='grayscale rounded-xl object-cover object-center'
                 />
               </li>
             ))}

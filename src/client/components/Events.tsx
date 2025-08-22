@@ -14,16 +14,16 @@ export default function Events() {
 
       <div className="grid grid-cols-8 gap-4 max-w-5xl mx-auto">
         <div className="col-span-5 md:col-span-4 row-span-4">
-          <Image className='w-full h-full rounded-lg' src="https://picsum.photos/800/400" alt="Event Image" width={800} height={600} />
+          <Image className='w-full h-full rounded-lg object-center object-cover' src="/exp/2.png" alt="Event Image" width={800} height={600} />
         </div>
         <div className="col-span-8 md:col-span-2 row-start-9 md:row-start-1 row-span-1 md:row-span-4 col-start-1 md:col-start-5">
-          <Image className='w-full h-full rounded-lg' src="https://picsum.photos/400/300" alt="Event Image" width={400} height={300} />
+          <Image className='w-full h-full rounded-lg object-center object-cover' src="/exp/8.png" alt="Event Image" width={400} height={300} />
         </div>
         <div className="col-span-3 md:col-span-2 row-span-2 col-start-6 md:col-start-7">
-          <Image className='w-full h-full rounded-lg' src="https://picsum.photos/400/300" alt="Event Image" width={800} height={200} />
+          <Image className='w-full h-full rounded-lg object-center object-cover' src="/exp/4.png" alt="Event Image" width={800} height={200} />
         </div>
         <div className="col-span-3 md:col-span-2 row-span-2 col-start-6 md:col-start-7 row-start-3">
-          <Image className='w-full h-full rounded-lg' src="https://picsum.photos/400/300" alt="Event Image" width={800} height={200} />
+          <Image className='w-full h-full rounded-lg object-center object-cover' src="/exp/6.png" alt="Event Image" width={800} height={200} />
         </div>
         <div className="col-span-4 row-span-4 row-start-5 flex flex-col gap-4">
           <p className='text-neutral-900 text-sm sm:text-xl md:text-xl lg:text-2xl xl:text-3xl'>
@@ -38,7 +38,7 @@ export default function Events() {
           </Link>
         </div>
         <div className="col-span-4 row-span-4 col-start-5 row-start-5">
-          <Image className='w-full h-full rounded-lg' src="https://picsum.photos/400/300" alt="Event Image" width={800} height={200} />
+          <Image className='w-full h-full rounded-lg object-center object-cover' src="/exp/11.png" alt="Event Image" width={800} height={200} />
         </div>
       </div>
     </div>

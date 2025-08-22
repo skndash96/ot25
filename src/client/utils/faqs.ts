@@ -1,22 +1,26 @@
 export const faqData = [
   {
-    question: "When is the Orientation Program?",
-    answer: "The program will run from August 21–25, featuring talks, campus tours, and fun activities to help you settle in."
+    question: "Which hostel will be allocated for freshers?",
+    answer: "For boys, the hostels allocated are Garnet A, Garnet B, and Agate. For girls, it is Opal C."
   },
   {
-    question: "Do I need to register for events?",
-    answer: "Most events are open to all freshers. Some workshops may require prior sign-up via the orientation portal."
+    question: "Which mobile data carrier has the best network coverage inside the campus?",
+    answer: "Most networks work fairly well on campus, but the preferred carriers are BSNL, Airtel, and Jio."
   },
   {
-    question: "Is there a dress code?",
-    answer: "No strict dress code — just wear something comfortable and appropriate for walking and participating in games."
+    question: "Are Wi-Fi facilities available in hostels?",
+    answer: "Yes, the college provides 24/7 Wi-Fi access in all hostel rooms."
   },
   {
-    question: "Will meals be provided?",
-    answer: "Yes! Lunch and snacks will be arranged during the main orientation days."
+    question: "Are there any student support services available like counselling and career guidance?",
+    answer: "Yes, the Student Welfare Department at NITT is always available to support students with any issues."
   },
   {
-    question: "How can I meet my seniors?",
-    answer: "Through interactive sessions, ice-breaking games, and the mentorship program scheduled throughout the week."
+    question: "What is the dress code to be followed?",
+    answer: "Inside official buildings such as Logos, Orion, Octagon, Library, Department Buildings, and Admin Building (including Barn Hall), shorts and sleeveless dresses are prohibited for all genders."
+  },
+  {
+    question: "After physical reporting, do the parents need to stay till orientation or can they leave?",
+    answer: "Parents are welcome to stay as long as they wish outside the campus, but inside access is permitted only on the first day of orientation."
   }
 ];

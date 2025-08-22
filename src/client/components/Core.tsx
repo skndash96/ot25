@@ -6,34 +6,35 @@ import React from 'react'
 
 const people = [
   {
-    name: 'John Doe',
+    name: 'Bibiyan John',
     role: 'Overall Coordinator',
-    image: '/pseudopic.jpeg',
+    image: '/oc.png',
+    filters: 'brightness-110'
   },
   {
-    name: 'Jane Smith',
-    role: 'Logistics Lead',
-    image: '/pseudopic.jpeg',
+    name: 'Dhananjeyan',
+    role: 'Creative Director',
+    image: '/dsn.png',
   },
   {
-    name: 'Alex Johnson',
-    role: 'Marketing Head',
-    image: '/pseudopic.jpeg',
+    name: 'Srinithi',
+    role: 'Content Head',
+    image: '/cnt.png',
   },
   {
-    name: 'Priya Patel',
-    role: 'Technical Director',
-    image: '/pseudopic.jpeg',
+    name: 'Krishna',
+    role: 'GL&P Head',
+    image: '/glnp.png',
   },
   {
-    name: 'Carlos Gomez',
-    role: 'Volunteer Coordinator',
-    image: '/pseudopic.jpeg',
+    name: 'Arjith',
+    role: 'Events Head',
+    image: '/evnt.png',
   },
   {
-    name: 'Emily Chen',
-    role: 'Sponsorship Manager',
-    image: '/pseudopic.jpeg',
+    name: 'Guruprasad',
+    role: 'Treasury Head',
+    image: '/trsr.png',
   }
 ]
 
@@ -70,7 +71,7 @@ export default function Core() {
         {people.map((person, index) => (
           <li ref={el => { itemRefs.current[index] = el }} key={index} className='group w-full max-w-60 md:max-w-80 mx-auto'>
             <div className='w-full relative aspect-square'>
-              <Image src={person.image} alt={person.name} fill className='grayscale group-hover:grayscale-0 group-hover:scale-105 group-hover:rotate-2 duration-200 rounded-xl' />
+              <Image src={person.image} alt={person.name} fill className={`grayscale-0 group-hover:grayscale-0 group-hover:scale-105 group-hover:rotate-2 duration-200 rounded-xl`} />
               <div className='p-4 absolute bottom-0 left-0'>
                 <h2 className='text-5xl md:text-6xl font-bold font-reckoner text-amber-200'>{person.name}</h2>
                 <h3 className='-translate-y-1 text-xl md:text-2xl font-semibold text-amber-50'>{person.role}</h3>

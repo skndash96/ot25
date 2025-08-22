@@ -11,7 +11,7 @@ export default function DTGReels() {
       <ul className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-4 gap-y-12 w-full'>
         {dtgs.map((reel, index) => (
           <li key={index} className="m">
-            <DTGItem href={reel.href} label={reel.number + " Reel"} coverImage={`/dtgnir/${reel.number}dtg.jpg`} />
+            <DTGItem href={reel.href} label={reel.number} coverImage={`/dtgnir/${reel.number}dtg.jpg`} />
           </li>
         ))}
       </ul>

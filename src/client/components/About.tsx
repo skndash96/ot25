@@ -102,8 +102,8 @@ export default function About() {
           </p>
         </div>
 
-        <div ref={elevateDotRef} className='scale-0 self-end md:self-start md:mt-12 md:mr-12 w-full max-w-[30vw] aspect-square rounded-full bg-amber-500 border-2 border-amber-500'>
-          <Image className='rounded-full' src="/insta_dp.webp" alt="Logo" fill />
+        <div ref={elevateDotRef} className='scale-0 self-end md:self-start md:mt-12 md:mr-12 w-full max-w-[30vw] aspect-square grid place-items-center rounded-full bg-amber-500'>
+          <Image className='w-[60%] h-fit object-center' src="/logo_short_black.png" alt="Logo" width={200} height={200} />
         </div>
       </div>
     </div>

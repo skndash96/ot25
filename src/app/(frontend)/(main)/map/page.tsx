@@ -185,21 +185,21 @@ export default function Map() {
       {/* Details Panel */}
       {selectedPlace && (
         <div
-          className={`fixed max-md:bottom-[15vh] md:top-[15vh] left-4 bg-black/80 text-white p-6 rounded-lg shadow-lg max-w-md z-30 backdrop-blur-sm border border-gray-600 transition-all duration-300 ${
+          className={`fixed bottom-0 left-1/2 -translate-x-1/2 w-full text-white p-6 shadow-lg z-[1] after:absolute after:inset-x-0 after:top-0 after:h-[5vh] after:bg-gradient-to-t bg-black after:-translate-y-full after:from-black after:via-black after:to-transparent transition-all duration-300 ${
             showDetails ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'
           }`}
         >
-          <div className="flex justify-between items-start mb-3">
-            <h2 className="text-xl font-bold text-yellow-400">{selectedPlace.name}</h2>
+          <div className="mb-4 flex justify-between items-start">
+            <h2 className="text-3xl font-bold grow text-yellow-400 text-center">{selectedPlace.name}</h2>
             <button
               onClick={handleEscape}
               className="text-gray-400 hover:text-white transition-colors duration-200 text-2xl leading-none"
               aria-label="Close"
-            >
+            >.
               ×
             </button>
           </div>
-          <p className="text-gray-200 leading-relaxed">{selectedPlace.description}</p>
+          <p className="mb-4 text-lg text-gray-200 text-center leading-relaxed">{selectedPlace.description}</p>
         </div>
       )}
 

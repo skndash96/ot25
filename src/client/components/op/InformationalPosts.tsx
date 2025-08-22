@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/all'
 import { infoPosts } from '@/client/utils/infoPosts'
@@ -95,6 +95,7 @@ export default function InformationalPosts() {
                 aspectRatio: '9 / 16'
               }}
             >
+              <span className="absolute top-0 left-0 -translate-y-full">{p.title}</span>
               <Image
                 src={p.cover}
                 alt={p.title}
