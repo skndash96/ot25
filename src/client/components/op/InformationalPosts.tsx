@@ -88,7 +88,7 @@ export default function InformationalPosts() {
             <Link
               key={index}
               href={p.href}
-              className="block absolute top-0 left-0"
+              className="block absolute top-0 left-0 bg-neutral-700"
               style={{ 
                 width: '16%', 
                 maxWidth: '240px',

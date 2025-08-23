@@ -28,10 +28,10 @@ const images = [
       href: "/exp/10.png"
     },
     {
-      href: "/exp/11.png"
+      href: "/exp/15.png"
     },
     {
-      href: "/exp/15.png"
+      href: "/exp/4.png"
     } 
   ],
   [
@@ -117,7 +117,7 @@ export default function Experience() {
         {images.map((list, listIdx) => (
           <ul ref={el => { ulRefs.current[listIdx] = el }} key={list[0].href} className={`min-h-fit h-fit ${listIdx === 0 ? "max-md:hidden" : ""}`}>
             {list.map((img, idx) => (
-              <li key={idx} className={`mt-4 block ${idx === 3 ? "md:hidden" : ""}`}>
+              <li key={idx} className={`mt-4 block bg-neutral-700 ${idx === 3 ? "md:hidden" : ""}`}>
                 <Image
                   src={img.href}
                   width={300}

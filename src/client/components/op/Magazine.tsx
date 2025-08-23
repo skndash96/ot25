@@ -22,8 +22,9 @@ export default function Magazine() {
     const fronts = container.querySelectorAll('.front') as NodeListOf<HTMLElement>
     const backs = container.querySelectorAll('.back') as NodeListOf<HTMLElement>
 
-    // Dynamic scroll height: each page needs one viewport height to flip
-    const totalScrollHeight = magazinePages.length * window.innerHeight
+    // Calculate minimum scroll height per page based on screen size
+    const minScrollPerPage = window.innerHeight < 600 ? 800 : window.innerHeight
+    const totalScrollHeight = magazinePages.length * minScrollPerPage
 
     ScrollTrigger.create({
       trigger: container,
@@ -51,8 +52,8 @@ export default function Magazine() {
         rotationY: -180,
         scrollTrigger: {
           trigger: container,
-          start: () => index * window.innerHeight,
-          end: () => (index + 1) * window.innerHeight,
+          start: () => index * minScrollPerPage,
+          end: () => (index + 1) * minScrollPerPage,
           scrub: 1,
           onUpdate: (self) => {
             const progress = self.progress
@@ -124,11 +125,6 @@ export default function Magazine() {
             </div>
           </div>
 
-          {/* By OT'25 text */}
-          {/* <div className="absolute left-1/2 right-0 inset-y-0 flex items-center justify-center font-sans text-white text-2xl font-bold z-0">
-            By OT&apos;25
-          </div> */}
-
           {magazinePages.map((page, index) => (
             <div key={index} className="page absolute left-1/2 right-0 inset-y-0 bg-neutral-600">
               <div className="front absolute inset-0 flex items-center justify-center text-white text-xl font-bold shadow-lg">
@@ -140,9 +136,6 @@ export default function Magazine() {
                   sizes="(max-width: 768px) 100vw, 50vw"
                   priority={index < 2}
                 />
-                {/* <div className="relative z-10 bg-black bg-opacity-50 px-4 py-2 rounded">
-                  {page.front}
-                </div> */}
               </div>
               <div className="back absolute inset-0 flex items-center justify-center text-white text-xl font-bold shadow-lg overflow-hidden">
                 <Image
@@ -153,9 +146,6 @@ export default function Magazine() {
                   sizes="(max-width: 768px) 100vw, 50vw"
                   priority={index < 2}
                 />
-                {/* <div className="relative z-10 bg-black bg-opacity-50 px-4 py-2 rounded">
-                  {page.back}
-                </div> */}
               </div>
             </div>
           ))}
