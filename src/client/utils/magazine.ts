@@ -3,7 +3,7 @@ export const magazinePages = [
     front: 'Front 1',
     back: 'Back 1',
     frontBg: '/mag/1.jpg',
-    backBg: '/mag/2.jpg',
+    backBg: '/mag/2.png',
   },
   {
     front: 'Front 2',

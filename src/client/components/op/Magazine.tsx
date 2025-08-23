@@ -24,7 +24,8 @@ export default function Magazine() {
 
     // Calculate minimum scroll height per page based on screen size
     const minScrollPerPage = window.innerHeight < 600 ? 800 : window.innerHeight
-    const totalScrollHeight = magazinePages.length * minScrollPerPage
+    const readingGap = 0.4 * minScrollPerPage
+    const totalScrollHeight = magazinePages.length * minScrollPerPage + (magazinePages.length - 1) * readingGap
 
     ScrollTrigger.create({
       trigger: container,
@@ -52,8 +53,8 @@ export default function Magazine() {
         rotationY: -180,
         scrollTrigger: {
           trigger: container,
-          start: () => index * minScrollPerPage,
-          end: () => (index + 1) * minScrollPerPage,
+          start: () => index * minScrollPerPage + readingGap * index,
+          end: () => (index + 1) * minScrollPerPage + readingGap * index,
           scrub: 1,
           onUpdate: (self) => {
             const progress = self.progress
@@ -108,7 +109,7 @@ export default function Magazine() {
       <div className="grow p-4 md:p-8 flex items-center justify-center">
         <div
           ref={containerRef}
-          className="relative portrait:w-full portrait:max-w-3xl portrait:h-auto landscape:h-[65vh] landscape:w-auto mx-auto aspect-[3/2]"
+          className="relative portrait:w-full portrait:max-w-3xl portrait:h-auto landscape:h-[65vh] landscape:w-auto mx-auto aspect-[1.41]"
           style={{
             WebkitFontSmoothing: 'antialiased',
           }}
