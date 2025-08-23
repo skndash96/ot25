@@ -41,7 +41,7 @@ export default function Header({
           <Image src="/logo_short_black.png" alt="Orientation 25 Logo" width={100} height={100} className="origin-left w-12 drop-shadow-[1px_1px_black]" />
         </Link>
 
-        <button onClick={() => setIsOpen(b => !b)} className="mr-4 px-2 py-1 text-lg font-bold rounded-md shadow-md bg-amber-400 hover:text-orange-700">
+        <button onClick={() => setIsOpen(b => !b)} className="mr-6 px-2 py-1 text-lg font-bold rounded-md shadow-md bg-amber-400 hover:text-orange-700">
           MENU
           {/* <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-menu-icon lucide-menu"><path d="M4 12h16" /><path d="M4 18h16" /><path d="M4 6h16" /></svg> */}
         </button>

@@ -10,7 +10,7 @@ import Faqs from '@/client/components/Faqs'
 export default function Home() {
   return (
     <>
-      <div className="w-screen overflow-x-hidden">
+      <div>
         <Header type="homepage" />
         <Hero />
         <About />

@@ -53,6 +53,11 @@ a:hover {
   @apply text-lg;
 }
 
+html, body {
+  width: 100vw;
+  overflow-x: hidden;
+}
+
 body {
   @apply font-clash bg-neutral-900 text-amber-50;
 }

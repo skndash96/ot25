@@ -16,7 +16,7 @@ export default function DTGItem({
     <Link href={href} className="relative block mx-auto w-36 h-64" style={{ perspective: '1000px' }}>
       <div className="notebook">
         {/* Front face */}
-        <div className="relative face front bg-amber-400">
+        <div className="relative face front bg-neutral-700">
           <Image src={coverImage} alt={label} layout="fill" objectFit="cover" />
         </div>
 

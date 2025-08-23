@@ -39,13 +39,13 @@ const images = [
       href: "/exp/17.jpg"
     },
     {
-      href: "/exp/15.png"
+      href: "/exp/8.png"
     },
     {
       href: "/exp/12.png"
     },
     {
-      href: "/exp/8.png"
+      href: "/exp/5.png"
     } 
   ],
 ]
