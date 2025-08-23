@@ -14,6 +14,7 @@ export default function Map() {
   const [selectedPlace, setSelectedPlace] = useState<Place | null>(null)
   const [isZoomed, setIsZoomed] = useState(false)
   const [showDetails, setShowDetails] = useState(false)
+  const [isImageLoading, setIsImageLoading] = useState(true)
   const imgRef = useRef<HTMLImageElement | null>(null)
   const containerRef = useRef<HTMLDivElement | null>(null)
 
@@ -39,17 +40,25 @@ export default function Map() {
   const ORIGINAL_WIDTH = 1920
   const ORIGINAL_HEIGHT = 1080
 
-  useEffect(() => {
-    const handleResize = () => {
-      if (imgRef.current) {
-        setDimensions({
-          width: imgRef.current.clientWidth,
-          height: imgRef.current.clientHeight,
-        })
-      }
+  const handleResize = () => {
+    if (imgRef.current) {
+      setDimensions({
+        width: imgRef.current.clientWidth,
+        height: imgRef.current.clientHeight,
+      })
     }
+  }
 
+  const handleImageLoad = () => {
+    setIsImageLoading(false)
+    // Call handleResize after image has loaded to get correct dimensions
+    handleResize()
+  }
+
+  useEffect(() => {
     window.addEventListener('resize', handleResize)
+    
+    // Call handleResize on mount in case image is already loaded
     handleResize()
 
     return () => {
@@ -129,6 +138,16 @@ export default function Map() {
 
   return (
     <>
+      {/* Loading Indicator */}
+      {isImageLoading && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="flex flex-col items-center space-y-4">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-400"></div>
+            <p className="text-white text-lg">Loading map...</p>
+          </div>
+        </div>
+      )}
+
       <div
         ref={containerRef}
         className="grow relative w-screen scroll-smooth overflow-auto cursor-pointer"
@@ -147,9 +166,11 @@ export default function Map() {
           style={{
             transition: 'transform 0.5s ease-in-out',
           }}
+          onLoad={handleImageLoad}
+          onError={() => setIsImageLoading(false)}
         />
 
-        {currentPlaces.map((p, i) => {
+        {!isImageLoading && currentPlaces.map((p, i) => {
           const isSelected = selectedPlace?.name === p.name
           return (
             <div
@@ -188,7 +209,7 @@ export default function Map() {
               onClick={handleEscape}
               className="text-gray-400 hover:text-white transition-colors duration-200 text-2xl leading-none"
               aria-label="Close"
-            >.
+            >
               ×
             </button>
           </div>

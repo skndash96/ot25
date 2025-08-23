@@ -64,7 +64,7 @@ export default function DTGItem({
         }
 
         .back {
-          background: linear-gradient(135deg, #e76f51 0%, #f4a261 100%);
+          background: #121212;
           transform: rotateY(180deg) translateZ(10px);
         }
 

@@ -22,6 +22,20 @@ const images = [
   ],
   [
     {
+      href: "/exp/16.jpg"
+    },
+    {
+      href: "/exp/10.png"
+    },
+    {
+      href: "/exp/11.png"
+    },
+    {
+      href: "/exp/15.png"
+    } 
+  ],
+  [
+    {
       href: "/exp/17.jpg"
     },
     {
@@ -34,20 +48,6 @@ const images = [
       href: "/exp/8.png"
     } 
   ],
-  [
-    {
-      href: "/exp/16.jpg"
-    },
-    {
-      href: "/exp/10.png"
-    },
-    {
-      href: "/exp/11.png"
-    },
-    {
-      href: "/exp/15.png"
-    } 
-  ]
 ]
 
 export default function Experience() {
