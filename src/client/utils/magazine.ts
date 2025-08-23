@@ -8,7 +8,7 @@ export const magazinePages = [
   {
     front: 'Front 2',
     back: 'Back 2',
-    frontBg: '/mag/3.jpg',
+    frontBg: '/mag/3.png',
     backBg: '/mag/4.jpg',
   },
   {
