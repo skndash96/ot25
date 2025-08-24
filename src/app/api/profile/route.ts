@@ -8,8 +8,8 @@ import { z } from "zod"
 
 const inputSchema = z.object({
   name: z.string().min(1, "Name is required").regex(/^[a-zA-Z\s]+$/, "Name must contain only letters and spaces"),
-  rollNumber: z.string().min(1, "Roll Number is required").regex(/^\d+$/, "Roll Number must be only digits"),
-  phoneNumber: z.string().regex(/^(\+91)?\s?\d{5}\s?\d{5}$/, "Phone Number must be valid Indian phone number"),
+  rollNumber: z.string().min(1, "Roll Number is required").regex(/^\d{8}$/, "Roll Number must be 8 digits"),
+  phoneNumber: z.string().min(5, "Phone Number is required").regex(/^[\d\-\+\s]+$/, "Phone Number must contain only digits"),
   gender: z.enum(["MALE", "FEMALE", "OTHER"]),
   department: z.enum(departments, "Department is required and should be valid"),
   image: z.url().optional()

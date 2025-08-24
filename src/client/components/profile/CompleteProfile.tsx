@@ -53,8 +53,8 @@ export default function CompleteProfile() {
     else if (!/^\d+$/.test(rollNumber)) newErrors.rollNumber = 'Roll Number must be only digits'
 
     if (!phoneNumber.trim()) newErrors.phoneNumber = 'Phone Number is required'
-    else if (phoneNumber && !/^(\+91)?\s?\d{5}\s?\d{5}$/.test(phoneNumber)) {
-      newErrors.phoneNumber = 'Phone Number must be valid Indian phone number'
+    else if (phoneNumber && !/^[\d\+\-\s]+$/.test(phoneNumber)) {
+      newErrors.phoneNumber = 'Phone Number must be valid phone number'
     }
 
     setErrors(newErrors)
