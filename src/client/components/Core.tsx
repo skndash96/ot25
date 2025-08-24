@@ -13,7 +13,7 @@ const people = [
     image: '/dsn.png',
   },
   {
-    name: 'Guruprasad',
+    name: 'Guru',
     ig: 'https://www.instagram.com/_.gru._11/',
     role: 'Treasury Head',
     image: '/trsr.png',
