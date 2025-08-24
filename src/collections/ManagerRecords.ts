@@ -10,7 +10,7 @@ export const ManagerRecords: CollectionConfig = {
     create: admins
   },
   admin: {
-    hidden: ({ user }) => !SUPER_EMAIL.includes(user.email || "")
+    hidden: ({ user }) => !SUPER_EMAIL.includes(user?.email || "")
   },
   fields: [
     {

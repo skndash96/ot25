@@ -22,7 +22,7 @@ const people = [
   {
     name: 'Guru',
     ig: 'https://www.instagram.com/_.gru._11/',
-    role: 'Treasury Head',
+    role: 'Treasurer',
     image: '/trsr.png',
   },
   {
