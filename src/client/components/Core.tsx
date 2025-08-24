@@ -13,17 +13,17 @@ const people = [
     image: '/dsn.png',
   },
   {
-    name: 'Guru',
-    ig: 'https://www.instagram.com/_.gru._11/',
-    role: 'Treasury Head',
-    image: '/trsr.png',
-  },
-  {
     name: 'Bibiyan John',
     ig: 'https://www.instagram.com/bibiyan._j_.joseph/',
     role: 'Overall Coordinator',
     image: '/oc.png',
     filters: 'brightness-110',
+  },
+  {
+    name: 'Guru',
+    ig: 'https://www.instagram.com/_.gru._11/',
+    role: 'Treasury Head',
+    image: '/trsr.png',
   },
   {
     name: 'Arjith',
