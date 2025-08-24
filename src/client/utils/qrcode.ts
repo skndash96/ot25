@@ -2,13 +2,14 @@
 import { Session } from 'next-auth'
 import QRCodeStyling from 'qr-code-styling'
 
-const width = 400
-const height = 550
+// Increased resolution by 2.5x for better quality
+const width = 1000
+const height = 1375
 const bgColor = '#0f0f23'
 const primaryColor = '#f59e0b'
 const textColor = '#facc15'
 const labelColor = '#fcd34d'
-const cardPadding = 20
+const cardPadding = 50
 
 function createCanvas(): HTMLCanvasElement {
   const canvas = document.createElement('canvas')
@@ -25,8 +26,8 @@ function drawCardBackground(ctx: CanvasRenderingContext2D) {
   ctx.fillStyle = bgColor
   ctx.fillRect(0, 0, width, height)
 
-  const borderRadius = 12
-  const borderWidth = 3
+  const borderRadius = 30
+  const borderWidth = 8
 
   ctx.strokeStyle = primaryColor
   ctx.lineWidth = borderWidth
@@ -42,14 +43,14 @@ function drawCardBackground(ctx: CanvasRenderingContext2D) {
 }
 
 async function drawProfileImage(ctx: CanvasRenderingContext2D, user: Session['user']) {
-  const radius = 65
+  const radius = 162
   const centerX = width / 2
-  const centerY = 100
+  const centerY = 250
 
   ctx.strokeStyle = primaryColor
-  ctx.lineWidth = 4
+  ctx.lineWidth = 10
   ctx.beginPath()
-  ctx.arc(centerX, centerY, radius + 6, 0, Math.PI * 2)
+  ctx.arc(centerX, centerY, radius + 15, 0, Math.PI * 2)
   ctx.stroke()
 
   if (!user.image || !user.image.startsWith('http')) {
@@ -119,7 +120,7 @@ function drawInitials(
   ctx.fill()
 
   ctx.fillStyle = '#000'
-  ctx.font = 'bold 36px "Clash Display"'
+  ctx.font = 'bold 90px "Clash Display"'
   ctx.textAlign = 'center'
   ctx.textBaseline = 'middle'
   ctx.fillText(initials, cx, cy)
@@ -136,12 +137,12 @@ function drawFields(
   ctx.textBaseline = 'top'
   ctx.textAlign = 'left'
 
-  const labelFont = 'bold 14px "Clash Display"'
-  const valueFont = '16px "Clash Display"'
+  const labelFont = 'bold 35px "Clash Display"'
+  const valueFont = '40px "Clash Display"'
 
   ctx.font = labelFont
   const labelWidths = fields.map((f) => ctx.measureText(f.label.toUpperCase() + ':').width)
-  const maxLabelWidth = Math.max(...labelWidths) + 15
+  const maxLabelWidth = Math.max(...labelWidths) + 37
 
   let y = startY
 
@@ -149,7 +150,7 @@ function drawFields(
     const { label, value } = fields[i]
 
     ctx.fillStyle = primaryColor
-    ctx.fillRect(startX - 10, y - 2, 3, 22)
+    ctx.fillRect(startX - 25, y - 5, 8, 55)
 
     ctx.font = labelFont
     ctx.fillStyle = labelColor
@@ -159,7 +160,7 @@ function drawFields(
     ctx.fillStyle = textColor
     ctx.fillText(value, startX + maxLabelWidth, y)
 
-    y += lineHeight + 8
+    y += lineHeight + 20
   }
 }
 
@@ -173,8 +174,8 @@ async function drawQRCode(
   const qrCode = new QRCodeStyling({
     type: 'canvas',
     shape: 'square',
-    width: 300,
-    height: 300,
+    width: 750, // Higher resolution QR code
+    height: 750,
     data: token,
     margin: 0,
     qrOptions: {
@@ -185,7 +186,7 @@ async function drawQRCode(
       saveAsBlob: true,
       hideBackgroundDots: true,
       imageSize: 0.4,
-      margin: 12,
+      margin: 30,
     },
     dotsOptions: {
       type: 'extra-rounded',
@@ -204,10 +205,10 @@ async function drawQRCode(
       img.onload = () => {
         ctx.drawImage(img, x, y, size, size)
 
-        ctx.font = 'bold 12px "Clash Display"'
+        ctx.font = 'bold 30px "Clash Display"'
         ctx.textAlign = 'center'
         ctx.fillStyle = labelColor
-        ctx.fillText('SCAN FOR VERIFICATION', width / 2, y + size + 20)
+        ctx.fillText('SCAN FOR VERIFICATION', width / 2, y + size + 50)
 
         resolve()
       }
@@ -226,11 +227,11 @@ async function drawQRCode(
 
     ctx.fillStyle = primaryColor
     ctx.fillRect(x, y, size, size)
-    ctx.font = 'bold 14px "Clash Display"'
+    ctx.font = 'bold 35px "Clash Display"'
     ctx.textAlign = 'center'
     ctx.fillStyle = textColor
     ctx.fillText('QR CODE', width / 2, y + size / 2)
-    ctx.fillText('UNAVAILABLE', width / 2, y + size / 2 + 20)
+    ctx.fillText('UNAVAILABLE', width / 2, y + size / 2 + 50)
   }
 }
 
@@ -266,15 +267,15 @@ export async function generateAndDownloadIDCard(
       },
       { label: 'Phone', value: user.phoneNumber! },
     ],
-    cardPadding + 20,
-    190,
-    width - (cardPadding + 20) * 2,
-    18,
+    cardPadding + 50,
+    475,
+    width - (cardPadding + 50) * 2,
+    45,
   )
 
-  const qrSize = 150
+  const qrSize = 375
   const qrX = width / 2 - qrSize / 2
-  const qrY = height - 210
+  const qrY = height - 525
 
   await drawQRCode(ctx, token, qrSize, qrX, qrY)
 
