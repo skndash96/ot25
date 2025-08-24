@@ -1,13 +1,13 @@
-import { admins } from '@/access/admins'
+import { admins, noAccess } from '@/access/admins'
 import type { CollectionConfig } from 'payload'
 
 export const AttendanceRecords: CollectionConfig = {
   slug: 'attendance-records',
   access: {
     read: admins,
-    update: admins,
-    delete: admins,
-    create: admins
+    update: noAccess,
+    delete: noAccess,
+    create: noAccess
   },
   fields: [
     {

@@ -1,13 +1,13 @@
-import { admins } from '@/access/admins'
+import { admins, noAccess } from '@/access/admins'
 import type { CollectionConfig } from 'payload'
 
 export const Admins: CollectionConfig = {
   slug: 'admins',
   access: {
     read: admins,
-    update: admins,
-    delete: admins,
-    create: admins
+    update: noAccess,
+    delete: noAccess,
+    create: noAccess
   },
   admin: {
     useAsTitle: 'email',
@@ -15,5 +15,10 @@ export const Admins: CollectionConfig = {
   auth: {
     tokenExpiration: 60 * 60 * 24 * 100, // 100 days
   },
-  fields: [],
+  fields: [
+    {
+      name: 'name',
+      type: 'text'
+    }
+  ],
 }

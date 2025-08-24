@@ -2,9 +2,9 @@ import { AttendanceRecord } from "@/payload-types";
 import payloadConfig from "@/payload.config";
 import { getPayload } from "payload";
 
-const EVENT_ID = ""
+// https://nittorientation.in/api/events?select[id]=true&select[title]=true
 
-main(EVENT_ID)
+const EVENT_ID = "68aa9e222b04a0f6bd106424"
 
 async function main(eventId: string) {
   const payload = await getPayload({
@@ -42,7 +42,20 @@ async function main(eventId: string) {
     return acc;
   }, [] as AttendanceRecord[])
 
+  const uniqueRecordsMap = new Map<string, AttendanceRecord>();
+
   for (const record of allRecords) {
+    const attendeeId = typeof record.attendee === "string" ? record.attendee : record.attendee.id
+    if (!uniqueRecordsMap.has(attendeeId)) {
+      uniqueRecordsMap.set(attendeeId, record);
+    }
+  }
+
+  const uniqueRecords = Array.from(uniqueRecordsMap.values());
+
+  let len = 0
+  for (const record of Object.values(uniqueRecords)) {
+    len += 1
     await payload.create({
       collection: "attendance-records",
       data: {
@@ -54,5 +67,12 @@ async function main(eventId: string) {
     })
   }
 
-  console.log(`Marked attendance for ${allRecords.length} attendees in event ${eventId}`);
+  console.log(`Marked attendance for ${len} attendees in event ${eventId}`);
+
+  payload.destroy()
 }
+
+main(EVENT_ID).then(() => {
+  console.log('done')
+  process.exit(0)
+}).catch(console.error)

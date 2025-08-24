@@ -6,6 +6,9 @@ import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 import { uploadthingStorage } from '@payloadcms/storage-uploadthing'
 import sharp from 'sharp'
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 import { Users } from './collections/Users'
 import { Admins } from './collections/Admins'

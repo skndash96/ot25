@@ -1,13 +1,13 @@
-import { admins } from '@/access/admins'
+import { admins, noAccess } from '@/access/admins'
 import type { CollectionConfig } from 'payload'
 
 export const Users: CollectionConfig = {
   slug: 'users',
   access: {
     read: admins, // next auth takes care of giving profile data to client
-    update: admins,
-    delete: admins,
-    create: admins
+    update: noAccess,
+    delete: noAccess,
+    create: noAccess
   },
   admin: {
     useAsTitle: 'rollNumber',

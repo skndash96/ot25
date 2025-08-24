@@ -1,6 +1,6 @@
 'use client'
 import useAuthGuard from '@/client/hooks/useAuthGuard'
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'react-toastify'
 import {
@@ -19,12 +19,37 @@ export default function Profile() {
   const router = useRouter()
   const [loggingOut, setLoggingOut] = React.useState(false)
   const [loading, setLoading] = React.useState(false)
+  const [attendance, setAttendance] = React.useState<
+    {
+      id: string
+      timestamp: string
+      event: { id: string; title: string; type: string }
+      manager: string
+    }[]
+  >([])
 
   const user = useMemo(() => {
     return session?.user || null
   }, [session])
 
   useAuthGuard()
+
+  const fetchAttendance = async () => {
+    try {
+      const res = await fetch('/api/attendance')
+      const { data } = await res.json()
+      setAttendance(data)
+    } catch (error) {
+      toast.error('Failed to fetch attendance records. Please try again.')
+      console.error('Failed to fetch attendance records:', error)
+    }
+  }
+
+  useEffect(() => {
+    if (user) {
+      fetchAttendance()
+    }
+  }, [user])
 
   const handleDownload = async () => {
     try {
@@ -155,6 +180,49 @@ export default function Profile() {
             {loading ? 'Downloading...' : 'Download Profile'}
           </button>
         </div>
+      </div>
+
+      {/* Attendance Records */}
+      <div className="w-full max-w-4xl mx-auto mt-8 bg-neutral-900 rounded-xl shadow-md p-8 border border-amber-600">
+        <h2 className="text-2xl font-bold text-amber-400 mb-6">Attendance Records</h2>
+        
+        {attendance.length === 0 ? (
+          <div className="text-center text-amber-300/70 py-8">
+            <p>No attendance records found.</p>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {attendance.map((record) => (
+              <div
+                key={record.id}
+                className="bg-neutral-800 rounded-lg p-4 border border-amber-600/30 hover:border-amber-600/50 transition-colors"
+              >
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                  <div className="flex-1">
+                    <h3 className="text-amber-300 font-semibold text-lg mb-1">
+                      {record.event.title}
+                    </h3>
+                    <div className="flex flex-wrap gap-4 text-sm text-amber-200/80">
+                      <span className="flex items-center gap-1">
+                        <span className="w-2 h-2 bg-green-400 rounded-full"></span>
+                        Manager: {record.manager}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="text-amber-300/90 text-sm font-medium">
+                    {new Date(record.timestamp).toLocaleString('en-US', {
+                      year: 'numeric',
+                      month: 'short',
+                      day: 'numeric',
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    })}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   )
