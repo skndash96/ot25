@@ -7,6 +7,18 @@ import React from 'react'
 
 const people = [
   {
+    name: 'Dhananjeyan',
+    ig: 'https://www.instagram.com/iamdhananjeyan/',
+    role: 'Creative Director',
+    image: '/dsn.png',
+  },
+  {
+    name: 'Guruprasad',
+    ig: 'https://www.instagram.com/_.gru._11/',
+    role: 'Treasury Head',
+    image: '/trsr.png',
+  },
+  {
     name: 'Bibiyan John',
     ig: 'https://www.instagram.com/bibiyan._j_.joseph/',
     role: 'Overall Coordinator',
@@ -14,10 +26,10 @@ const people = [
     filters: 'brightness-110',
   },
   {
-    name: 'Dhananjeyan',
-    ig: 'https://www.instagram.com/iamdhananjeyan/',
-    role: 'Creative Director',
-    image: '/dsn.png',
+    name: 'Arjith',
+    ig: 'https://www.instagram.com/arjith._.arju/',
+    role: 'Events Head',
+    image: '/evnt.png',
   },
   {
     name: 'Srinidhi',
@@ -30,18 +42,6 @@ const people = [
     ig: 'https://www.instagram.com/krishna__mudhol/',
     role: 'GL&P Head',
     image: '/glnp.png',
-  },
-  {
-    name: 'Arjith',
-    ig: 'https://www.instagram.com/arjith._.arju/',
-    role: 'Events Head',
-    image: '/evnt.png',
-  },
-  {
-    name: 'Guruprasad',
-    ig: 'https://www.instagram.com/_.gru._11/',
-    role: 'Treasury Head',
-    image: '/trsr.png',
   },
 ]
 
