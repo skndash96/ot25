@@ -1,4 +1,4 @@
-import { admins, noAccess } from '@/access/admins'
+import { admins, noAccess } from '@/access/index'
 import type { CollectionConfig } from 'payload'
 
 export const Admins: CollectionConfig = {

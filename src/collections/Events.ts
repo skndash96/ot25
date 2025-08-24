@@ -1,5 +1,4 @@
-import { admins } from '@/access/admins'
-import { anyone } from '@/access/anyone'
+import { admins, anyone } from '@/access/index'
 import { Event } from '@/payload-types'
 import type { CollectionBeforeReadHook, CollectionConfig } from 'payload'
 

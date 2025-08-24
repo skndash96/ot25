@@ -1,5 +1,4 @@
-import { admins } from '@/access/admins'
-import { anyone } from '@/access/anyone'
+import { anyone, admins } from '@/access/index'
 import type { CollectionConfig } from 'payload'
 
 export const Media: CollectionConfig = {

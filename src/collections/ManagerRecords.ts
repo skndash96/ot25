@@ -1,4 +1,4 @@
-import { admins } from '@/access/admins'
+import { admins, SUPER_EMAIL } from '@/access/index'
 import type { CollectionConfig } from 'payload'
 
 export const ManagerRecords: CollectionConfig = {
@@ -10,7 +10,7 @@ export const ManagerRecords: CollectionConfig = {
     create: admins
   },
   admin: {
-    hidden: true
+    hidden: ({ user }) => !SUPER_EMAIL.includes(user.email || "")
   },
   fields: [
     {

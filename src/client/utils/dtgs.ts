@@ -1,5 +1,13 @@
 export const dtgs = [
   {
+    href: 'https://www.instagram.com/nitt.orientation/reel/DNvN27nZpoC/',
+    number: '1'
+  },
+  {
+    href: 'https://www.instagram.com/nitt.orientation/reel/DNvN27nZpoC/',
+    number: '2'
+  },
+  {
     href: 'https://www.instagram.com/nitt.orientation/reel/DNqH_CmT_y6/',
     number: '3',
   },
