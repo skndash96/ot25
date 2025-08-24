@@ -12,7 +12,6 @@ const getCurrentDay = () => {
 
 export default function SchedulePage() {
   const [selectedDayIndex, setSelectedDayIndex] = useState(0)
-  const [isAnimating, setIsAnimating] = useState(false)
   const itemRefs = useRef<(HTMLDivElement | null)[]>([])
   const tabsContainerRef = useRef<HTMLDivElement>(null)
 
@@ -25,7 +24,6 @@ export default function SchedulePage() {
   }, [])
 
   const animateItems = () => {
-    setIsAnimating(true)
     itemRefs.current.forEach((item, index) => {
       if (item) {
         item.style.opacity = '0'
@@ -37,7 +35,6 @@ export default function SchedulePage() {
         }, index * 100)
       }
     })
-    setTimeout(() => setIsAnimating(false), 600)
   }
 
   useEffect(() => {
@@ -45,19 +42,19 @@ export default function SchedulePage() {
   }, [selectedDayIndex])
 
   const handleDaySelect = (index: number) => {
-    if (index !== selectedDayIndex && !isAnimating) {
+    if (index !== selectedDayIndex) {
       setSelectedDayIndex(index)
     }
   }
 
   const handlePrevDay = () => {
-    if (selectedDayIndex > 0 && !isAnimating) {
+    if (selectedDayIndex > 0) {
       setSelectedDayIndex(selectedDayIndex - 1)
     }
   }
 
   const handleNextDay = () => {
-    if (selectedDayIndex < scheduleData.length - 1 && !isAnimating) {
+    if (selectedDayIndex < scheduleData.length - 1) {
       setSelectedDayIndex(selectedDayIndex + 1)
     }
   }
@@ -80,10 +77,6 @@ export default function SchedulePage() {
   )
 
   return (
-    <ComingSoon />
-  )
-
-  return (
     <div className="min-h-screen bg-neutral-900 font-sans">
       {/* Header with Day Navigation */}
       <div className="bg-neutral-800 border-b border-neutral-700 sticky top-0 z-[1] backdrop-blur-sm">
@@ -92,7 +85,7 @@ export default function SchedulePage() {
           <div className="flex items-center justify-between mb-4 md:hidden">
             <button
               onClick={handlePrevDay}
-              disabled={selectedDayIndex === 0 || isAnimating}
+              disabled={selectedDayIndex === 0}
               className="p-2 rounded-lg bg-neutral-700 text-neutral-300 hover:bg-neutral-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               <ChevronLeft className="w-5 h-5" />
@@ -113,7 +106,7 @@ export default function SchedulePage() {
 
             <button
               onClick={handleNextDay}
-              disabled={selectedDayIndex === scheduleData.length - 1 || isAnimating}
+              disabled={selectedDayIndex === scheduleData.length - 1}
               className="p-2 rounded-lg bg-neutral-700 text-neutral-300 hover:bg-neutral-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               <ChevronRight className="w-5 h-5" />
@@ -142,12 +135,11 @@ export default function SchedulePage() {
                   <button
                     key={day.fullDate}
                     onClick={() => handleDaySelect(index)}
-                    disabled={isAnimating}
                     className={`flex-shrink-0 px-4 py-3 rounded-lg transition-all duration-200 relative ${
                       isSelected
                         ? 'bg-amber-500 text-black font-medium shadow-lg'
                         : 'bg-neutral-700 text-neutral-300 hover:bg-neutral-600 hover:text-white'
-                    } ${isAnimating ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+                    } cursor-pointer`}
                   >
                     <div className="text-sm font-medium">{dayFormatted}</div>
                     <div className="text-xs opacity-75">{dayName}</div>

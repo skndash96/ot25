@@ -23,7 +23,7 @@ export default function Magazine() {
     const backs = container.querySelectorAll('.back') as NodeListOf<HTMLElement>
 
     // Calculate minimum scroll height per page based on screen size
-    const minScrollPerPage = window.innerHeight < 600 ? 800 : window.innerHeight
+    const minScrollPerPage = Math.max(1000, window.innerHeight)
     const readingGap = 0.4 * minScrollPerPage
     const totalScrollHeight = magazinePages.length * minScrollPerPage + (magazinePages.length - 1) * readingGap
 
@@ -47,8 +47,6 @@ export default function Magazine() {
     })
 
     pages.forEach((page, index) => {
-      let hasFlipped = false
-
       gsap.to(page, {
         rotationY: -180,
         scrollTrigger: {
@@ -69,7 +67,6 @@ export default function Magazine() {
                 if (progress > 0.5) {
                   // More than halfway flipped - behind remaining pages but above already flipped
                   gsap.set(p, { zIndex: 0 })
-                  hasFlipped = true
                 } else {
                   // Less than halfway - above all other pages
                   gsap.set(p, { zIndex: magazinePages.length + 10 })
@@ -79,19 +76,6 @@ export default function Magazine() {
                 gsap.set(p, { zIndex: magazinePages.length - i })
               }
             })
-
-            if (progress >= 0.99 && hasFlipped) {
-              console.log('Fully flipped page', index + 1)
-            }
-
-            // Handle reverse scrolling
-            if (progress <= 0.01 && hasFlipped) {
-              hasFlipped = false
-              // Reset all z-indices when unflipping
-              pages.forEach((p, i) => {
-                gsap.set(p, { zIndex: magazinePages.length - i })
-              })
-            }
           },
         },
         transformOrigin: '0% 100%',
