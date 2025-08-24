@@ -50,7 +50,7 @@ export default function CompleteProfile() {
     if (!department) newErrors.department = 'Department is required'
 
     if (!rollNumber.trim()) newErrors.rollNumber = 'Roll Number is required'
-    else if (!/^\d+$/.test(rollNumber)) newErrors.rollNumber = 'Roll Number must be only digits'
+    else if (!/^\d{8}$/.test(rollNumber)) newErrors.rollNumber = 'Roll Number must be 8 digits'
 
     if (!phoneNumber.trim()) newErrors.phoneNumber = 'Phone Number is required'
     else if (phoneNumber && !/^[\d\+\-\s]+$/.test(phoneNumber)) {
