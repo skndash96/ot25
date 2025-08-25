@@ -5,7 +5,7 @@ import { RichText } from '@payloadcms/richtext-lexical/react'
 import Image from 'next/image'
 import React, { useEffect, useMemo, useState } from 'react'
 import { toast } from 'react-toastify'
-import { Calendar, Clock, MapPin, Users, CheckCircle, ArrowLeft } from 'lucide-react'
+import { Calendar, MapPin, Users, CheckCircle, ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 import { useSession } from 'next-auth/react'
 
@@ -104,20 +104,10 @@ export default function EventPage({ event }: { event: Event }) {
             <div className="bg-neutral-800 rounded-2xl p-6 space-y-4">
               <div className="flex items-center gap-3 text-neutral-300">
                 <Calendar className="w-5 h-5 text-amber-400 flex-shrink-0" />
-                <span>
-                  {new Date(event.date).toLocaleString('en', {
-                    day: 'numeric',
-                    weekday: 'long',
-                    month: 'long',
-                    year: 'numeric',
-                  })}
-                </span>
+                Date Information
               </div>
 
-              <div className="flex items-center gap-3 text-neutral-300">
-                <Clock className="w-5 h-5 text-amber-400 flex-shrink-0" />
-                <span>{event.time}</span>
-              </div>
+              <RichText data={event.date} />
 
               <div className="flex items-center gap-3 text-neutral-300">
                 <MapPin className="w-5 h-5 text-amber-400 flex-shrink-0" />

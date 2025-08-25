@@ -31,6 +31,11 @@ export const Events: CollectionConfig = {
       defaultValue: false,
     },
     {
+      name: 'isRegistrationClosed',
+      type: 'checkbox',
+      defaultValue: false,
+    },
+    {
       name: 'type',
       type: 'select',
       options: ['Guest Lecture', 'Proshow', 'Workshop', 'Event', 'Other'],
@@ -38,17 +43,11 @@ export const Events: CollectionConfig = {
     },
     {
       name: 'date',
-      type: 'date',
-      required: true,
-    },
-    {
-      name: 'time',
-      type: 'text',
+      type: 'richText'
     },
     {
       name: 'location',
-      type: 'text',
-      required: true,
+      type: 'text'
     },
     {
       name: 'description',

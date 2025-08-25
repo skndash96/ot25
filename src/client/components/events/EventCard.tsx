@@ -41,7 +41,7 @@ export default function EventCard({
         <h3 className="text-sm text-amber-300">{event.type}</h3>
 
         <div className="mt-2 space-y-1">
-          <div className="flex items-center gap-1 text-neutral-300">
+          {/* <div className="flex items-center gap-1 text-neutral-300">
             <Calendar className="w-3 h-3 text-amber-400" />
             <span className="text-sm">
               {new Date(event.date).toLocaleString('en', {
@@ -52,12 +52,14 @@ export default function EventCard({
             </span>
             <Clock className="w-3 h-3 text-amber-400 ml-1" />
             <span className="text-sm">{event.time}</span>
-          </div>
+          </div> */}
 
-          <div className="flex items-center gap-1 text-neutral-300">
-            <MapPin className="w-3 h-3 text-amber-400" />
-            <span className="text-sm truncate">{event.location}</span>
-          </div>
+          {event.location && (
+            <div className="flex items-center gap-1 text-neutral-300">
+              <MapPin className="w-3 h-3 text-amber-400" />
+              <span className="text-sm truncate">{event.location}</span>
+            </div>
+          )}
         </div>
 
         {/* Mobile View Details Link */}

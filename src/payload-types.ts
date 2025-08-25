@@ -197,10 +197,24 @@ export interface Event {
   title: string;
   thumbnail?: (string | null) | Media;
   isPublic?: boolean | null;
+  isRegistrationClosed?: boolean | null;
   type: 'Guest Lecture' | 'Proshow' | 'Workshop' | 'Event' | 'Other';
-  date: string;
-  time?: string | null;
-  location: string;
+  date?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  location?: string | null;
   description?: {
     root: {
       type: string;
@@ -426,9 +440,9 @@ export interface EventsSelect<T extends boolean = true> {
   title?: T;
   thumbnail?: T;
   isPublic?: T;
+  isRegistrationClosed?: T;
   type?: T;
   date?: T;
-  time?: T;
   location?: T;
   description?: T;
   rules?: T;
