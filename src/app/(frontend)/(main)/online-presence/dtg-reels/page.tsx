@@ -1,6 +1,12 @@
 import DTGItem from '@/client/components/op/DTGItem'
 import { dtgs } from '@/client/utils/dtgs'
+import { Metadata } from 'next'
 import React from 'react'
+
+export const metadata: Metadata = {
+  title: 'DTG Reels',
+  description: 'Explore our collection of engaging DTG reels showcasing our latest designs and creative processes.'
+}
 
 export default function DTGReels() {
   return (

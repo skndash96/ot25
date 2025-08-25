@@ -163,14 +163,8 @@ export default function Footer() {
               Meet Our Team! 
             </h2>
             <p className="text-xl text-gray-300 mb-6">
-              The incredible 14 members who make OTD 25 possible ✨
+              The incredible 15 members who make OTD 25 possible ✨
             </p>
-            <button
-              onClick={handleTeamClick}
-              className="mb-4 px-8 py-3 bg-gradient-to-r from-orange-500 to-yellow-500 text-black font-bold rounded-full hover:scale-105 transition-transform duration-300 shadow-lg hover:shadow-xl"
-            >
-              Close
-            </button>
           </div>
         </div>
 

@@ -1,4 +1,5 @@
 import Footer from '@/client/components/Footer'
+import { Metadata } from 'next'
 import Link from 'next/link'
 
 const buttons = [
@@ -6,6 +7,11 @@ const buttons = [
   { label: 'DTG Reels', slug: 'dtg-reels' },
   { label: 'Informative Posts', slug: 'info-posts' },
 ]
+
+export const metadata: Metadata = {
+  title: 'OT25 Online Presence',
+  description: 'Stay informed with our curated posts covering essential topics, tips, and updates to enhance your experience during Orientation \'25.',
+}
 
 export default function OnlinePresence() {
   return (
