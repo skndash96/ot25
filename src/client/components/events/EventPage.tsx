@@ -40,6 +40,10 @@ export default function EventPage({ event }: { event: Event }) {
       })
 
       if (!response.ok) {
+        if (response.status === 400) {
+          toast.error('Registration is Closed for this event')
+          return
+        }
         throw new Error('Failed to register for event')
       }
 
@@ -102,17 +106,23 @@ export default function EventPage({ event }: { event: Event }) {
             </div>
 
             <div className="bg-neutral-800 rounded-2xl p-6 space-y-4">
-              <div className="flex items-center gap-3 text-neutral-300">
-                <Calendar className="w-5 h-5 text-amber-400 flex-shrink-0" />
-                Date Information
-              </div>
+              {event.date && (
+                <>
+                  <div className="flex items-center gap-3 text-neutral-300">
+                    <Calendar className="w-5 h-5 text-amber-400 flex-shrink-0" />
+                    Date Information
+                  </div>
 
-              <RichText data={event.date} />
+                  <RichText data={event.date} />
+                </>
+              )}
 
-              <div className="flex items-center gap-3 text-neutral-300">
-                <MapPin className="w-5 h-5 text-amber-400 flex-shrink-0" />
-                <span>{event.location}</span>
-              </div>
+              {event.location && (
+                <div className="flex items-center gap-3 text-neutral-300">
+                  <MapPin className="w-5 h-5 text-amber-400 flex-shrink-0" />
+                  <span>{event.location}</span>
+                </div>
+              )}
 
               <div className="flex items-center gap-3 text-neutral-300">
                 <Users className="w-5 h-5 text-amber-400 flex-shrink-0" />

@@ -91,6 +91,21 @@ export const POST = async (
       )
     }
 
+    const event = await payload.findByID({
+      collection: 'events',
+      id: eventId,
+      select: {
+        isRegistrationClosed: true,
+      }
+    })
+
+    if (event.isRegistrationClosed === true) {
+      return NextResponse.json(
+        { error: 'Registrations are closed for this event' },
+        { status: 400 },
+      )
+    }
+
     await payload.create({
       collection: 'registrations',
       data: {
