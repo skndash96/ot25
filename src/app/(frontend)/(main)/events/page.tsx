@@ -12,10 +12,6 @@ export const metadata: Metadata = {
 }
 
 export default async function EventsPage() {
-  return (
-    <ComingSoon />
-  )
-
   try {
     const payload = await getPayload({
       config: payloadConfig

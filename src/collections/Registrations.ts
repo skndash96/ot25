@@ -17,6 +17,20 @@ export const Registrations: CollectionConfig = {
       required: true,
     },
     {
+      name: 'members',
+      type: 'array',
+      minRows: 1,
+      fields: [
+        {
+          name: 'user',
+          type: 'relationship',
+          relationTo: 'users',
+          required: true,
+        }
+      ],
+      required: true,
+    },
+    {
       name: 'user',
       type: 'relationship',
       relationTo: 'users',

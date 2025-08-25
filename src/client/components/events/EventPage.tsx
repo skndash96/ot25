@@ -5,14 +5,126 @@ import { RichText } from '@payloadcms/richtext-lexical/react'
 import Image from 'next/image'
 import React, { useEffect, useMemo, useState } from 'react'
 import { toast } from 'react-toastify'
-import { Calendar, MapPin, Users, CheckCircle, ArrowLeft } from 'lucide-react'
+import { Calendar, MapPin, Users, CheckCircle, ArrowLeft, X, MessageCircle } from 'lucide-react'
 import Link from 'next/link'
 import { useSession } from 'next-auth/react'
+import { json } from 'zod'
+
+interface RegistrationModalProps {
+  isOpen: boolean
+  onClose: () => void
+  onSubmit: (members: string[]) => void
+  teamSize: number
+  isLoading: boolean
+  userId: string
+}
+
+function RegistrationModal({ isOpen, onClose, onSubmit, teamSize, isLoading, userId }: RegistrationModalProps) {
+  const [members, setMembers] = useState<string[]>([])
+
+  useEffect(() => {
+    if (isOpen) {
+      // Initialize with userId as first member and empty strings for remaining slots
+      const initialMembers = Array(teamSize).fill('').map((_, index) => index === 0 ? userId : '')
+      setMembers(initialMembers)
+    }
+  }, [isOpen, teamSize, userId])
+
+  const updateMember = (index: number, value: string) => {
+    const newMembers = [...members]
+    newMembers[index] = value
+    setMembers(newMembers)
+  }
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    const validMembers = members.filter(member => member.trim() !== '')
+    
+    if (validMembers.length < teamSize) {
+      toast.error(`Please enter all ${teamSize} team members`)
+      return
+    }
+
+    onSubmit(validMembers)
+  }
+
+  if (!isOpen) return null
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center">
+      <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />
+      <div className="relative bg-neutral-800 rounded-2xl p-6 w-full max-w-md mx-4 max-h-[90vh] overflow-y-auto">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-xl font-semibold text-amber-400">Register for Event</h2>
+          <button
+            onClick={onClose}
+            className="text-neutral-400 hover:text-white transition-colors"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <p className="text-sm text-neutral-300 mb-4">
+              Team Size: {teamSize} {teamSize === 1 ? 'member' : 'members'}
+            </p>
+            
+            <div className="space-y-3">
+              {members.map((member, index) => (
+                <div key={index}>
+                  <label className="block text-sm text-neutral-300 mb-1">
+                    {index === 0 
+                      ? 'Team Leader (You)' 
+                      : `Member ${index + 1} Roll Number`
+                    }
+                  </label>
+                  <input
+                    type="text"
+                    value={member}
+                    onChange={(e) => updateMember(index, e.target.value)}
+                    placeholder={index === 0 ? "Your roll number" : "Enter roll number"}
+                    disabled={index === 0 && member !== ''}
+                    className={`w-full px-3 py-2 border border-neutral-600 rounded-lg text-white placeholder-neutral-400 transition-colors ${
+                      index === 0 
+                        ? 'bg-neutral-600 cursor-not-allowed' 
+                        : 'bg-neutral-700 focus:outline-none focus:border-amber-400'
+                    }`}
+                    required
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="flex gap-3 pt-4">
+            <button
+              type="button"
+              onClick={onClose}
+              className="flex-1 py-2 px-4 border border-neutral-600 text-neutral-300 rounded-lg hover:bg-neutral-700 transition-colors"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="flex-1 py-2 px-4 bg-amber-400 hover:bg-amber-500 text-neutral-900 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isLoading ? 'Registering...' : 'Register'}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  )
+}
 
 export default function EventPage({ event }: { event: Event }) {
   const { data: session } = useSession()
   const userId = useMemo(() => session?.user.id, [session])
   const [hasRegistered, setHasRegistered] = useState<boolean | undefined>()
+  const [showModal, setShowModal] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     if (!userId) {
@@ -33,32 +145,53 @@ export default function EventPage({ event }: { event: Event }) {
       })
   }, [userId, event.id])
 
-  const handleSubmitRegistration = async () => {
+  const handleRegistration = async (members: string[]) => {
+    setIsLoading(true)
     try {
       const response = await fetch(`/api/registrations/${event.id}`, {
-        method: hasRegistered ? 'DELETE' : 'POST',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          members: members.map(rollNumber => rollNumber.trim())
+        }),
       })
 
       if (!response.ok) {
-        if (response.status === 400) {
-          toast.error('Registration is Closed for this event')
-          return
-        }
-        throw new Error('Failed to register for event')
+        const json = await response.json() as any
+
+        toast.error(json.error || json.message || 'Failed to register for event')
+        return
       }
 
-      const json = await response.json()
-      const newHasRegistered = json.data
-      setHasRegistered(newHasRegistered)
+      setHasRegistered(true)
+      setShowModal(false)
 
-      toast.success(
-        newHasRegistered
-          ? 'Successfully registered for the event!'
-          : 'Successfully unregistered from the event!',
-      )
+      toast.success('Successfully registered for the event!')
     } catch (error) {
-      toast.error('Error completing the action')
-      console.error('Error completing the action (Register/Unregister):', error)
+      toast.error('Error completing the registration')
+      console.error('Error completing the registration:', error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handleUnregister = async () => {
+    try {
+      const response = await fetch(`/api/registrations/${event.id}`, {
+        method: 'DELETE',
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to unregister from event')
+      }
+
+      setHasRegistered(false)
+      toast.success('Successfully unregistered from the event!')
+    } catch (error) {
+      toast.error('Error unregistering from the event')
+      console.error('Error unregistering:', error)
     }
   }
 
@@ -126,19 +259,34 @@ export default function EventPage({ event }: { event: Event }) {
 
               <div className="flex items-center gap-3 text-neutral-300">
                 <Users className="w-5 h-5 text-amber-400 flex-shrink-0" />
-                <span>{event.totalRegistrations || 0} registered</span>
+                <span>{event.totalRegistrations || 0} registered • Team size: {event.teamSize}</span>
               </div>
             </div>
 
             {hasRegistered ? (
-              <div className="mt-4 text-center space-y-2">
+              <div className="mt-4 text-center space-y-4">
                 <div className="inline-flex items-center gap-2 text-amber-400 bg-amber-400/10 px-4 py-2 rounded-full">
                   <CheckCircle className="w-5 h-5" />
                   <span className="font-medium text-xl">You&apos;re registered!</span>
                 </div>
 
+                {/* WhatsApp Link */}
+                {event.whatsappLink && (
+                  <div className="flex flex-col items-center gap-2">
+                    <a
+                      href={event.whatsappLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-full transition-colors"
+                    >
+                      <MessageCircle className="w-5 h-5" />
+                      <span>Join WhatsApp Group</span>
+                    </a>
+                  </div>
+                )}
+
                 <button
-                  onClick={handleSubmitRegistration}
+                  onClick={handleUnregister}
                   className="ml-4 -translate-y-1/4 text-base underline text-neutral-400 hover:text-red-400 transition"
                 >
                   Unregister
@@ -146,11 +294,16 @@ export default function EventPage({ event }: { event: Event }) {
               </div>
             ) : (
               <button
-                disabled={hasRegistered === undefined}
-                onClick={handleSubmitRegistration}
-                className="w-full py-4 px-6 rounded-xl font-semibold text-lg transition-all duration-200 disabled:bg-transparent bg-amber-400 hover:bg-amber-500 text-neutral-900 shadow-lg hover:shadow-amber-400/25"
+                disabled={hasRegistered === undefined || event.isRegistrationClosed || !userId}
+                onClick={() => setShowModal(true)}
+                className="w-full py-4 px-6 rounded-xl font-semibold text-lg transition-all duration-200 disabled:bg-neutral-600 disabled:text-neutral-400 disabled:cursor-not-allowed bg-amber-400 hover:bg-amber-500 text-neutral-900 shadow-lg hover:shadow-amber-400/25"
               >
-                {hasRegistered === undefined ? 'Loading...' : 'Register for Event'}
+                {hasRegistered === undefined 
+                  ? 'Loading...' 
+                  : event.isRegistrationClosed 
+                    ? 'Registration Closed' 
+                    : 'Register for Event'
+                }
               </button>
             )}
           </div>
@@ -179,6 +332,16 @@ export default function EventPage({ event }: { event: Event }) {
           )}
         </div>
       </div>
+
+      {/* Registration Modal */}
+      <RegistrationModal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        onSubmit={handleRegistration}
+        teamSize={event.teamSize}
+        isLoading={isLoading}
+        userId={session?.user?.rollNumber || ''}
+      />
     </>
   )
 }

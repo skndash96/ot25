@@ -43,6 +43,10 @@ a:hover {
   @apply underline;
 }
 
+.prose {
+  @apply font-sans;
+}
+
 .prose h1 {
   @apply text-2xl;
 }
@@ -51,6 +55,10 @@ a:hover {
 }
 .prose h3 {
   @apply text-lg;
+}
+
+.prose li {
+  @apply list-disc;
 }
 
 html, body {

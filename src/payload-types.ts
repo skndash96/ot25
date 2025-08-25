@@ -199,6 +199,8 @@ export interface Event {
   isPublic?: boolean | null;
   isRegistrationClosed?: boolean | null;
   type: 'Guest Lecture' | 'Proshow' | 'Workshop' | 'Event' | 'Other';
+  teamSize: number;
+  whatsappLink?: string | null;
   date?: {
     root: {
       type: string;
@@ -261,6 +263,10 @@ export interface Event {
 export interface Registration {
   id: string;
   event: string | Event;
+  members: {
+    user: string | User;
+    id?: string | null;
+  }[];
   user: string | User;
   createdAt: string;
   updatedAt: string;
@@ -442,6 +448,8 @@ export interface EventsSelect<T extends boolean = true> {
   isPublic?: T;
   isRegistrationClosed?: T;
   type?: T;
+  teamSize?: T;
+  whatsappLink?: T;
   date?: T;
   location?: T;
   description?: T;
@@ -457,6 +465,12 @@ export interface EventsSelect<T extends boolean = true> {
  */
 export interface RegistrationsSelect<T extends boolean = true> {
   event?: T;
+  members?:
+    | T
+    | {
+        user?: T;
+        id?: T;
+      };
   user?: T;
   createdAt?: T;
   updatedAt?: T;

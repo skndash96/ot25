@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getPayload } from 'payload'
 
 export const GET = async (
-  req: NextRequest,
+  _: NextRequest,
   {
     params,
   }: {
@@ -38,10 +38,19 @@ export const GET = async (
           equals: eventId,
         },
       },
+      select: {
+        members: true,
+        createdAt: true
+      },
+      depth: 0
     })
 
+    const registration = registrations.totalDocs > 0 ? {
+      members: registrations.docs[0].members.map(m => m.user),
+    } : null
+
     return NextResponse.json({
-      data: registrations.totalDocs > 0 // Check if the user has registered for the event
+      data: registration
     }, { status: 200 })
   } catch (error) {
     console.error('Error fetching registration:', error)
@@ -68,10 +77,29 @@ export const POST = async (
   }
 
   try {
+    const { members } = await req.json()
+
+    if (!members || !Array.isArray(members) || members.length === 0) {
+      return NextResponse.json(
+        { error: 'Members array is required' },
+        { status: 400 },
+      )
+    }
+
+    const set = new Set(members)
+
+    if (set.size !== members.length) {
+      return NextResponse.json(
+        { error: 'Duplicate members in the team' },
+        { status: 400 },
+      )
+    }
+
     const payload = await getPayload({
       config: payloadConfig,
     })
 
+    // Check if user is already registered for this event
     const alreadyExists = await payload.find({
       collection: 'registrations',
       where: {
@@ -82,20 +110,26 @@ export const POST = async (
           equals: eventId,
         },
       },
+      select: {
+        members: true
+      },
+      depth: 0
     })
 
     if (alreadyExists.totalDocs > 0) {
       return NextResponse.json(
-        { error: 'You are already registered for this event' },
+        { error: 'You already registered for this event' },
         { status: 400 },
       )
     }
 
+    // Get event details
     const event = await payload.findByID({
       collection: 'events',
       id: eventId,
       select: {
         isRegistrationClosed: true,
+        teamSize: true,
       }
     })
 
@@ -106,11 +140,78 @@ export const POST = async (
       )
     }
 
+    // Validate team size
+    if (members.length !== event.teamSize) {
+      return NextResponse.json(
+        { error: `Team size must be exactly ${event.teamSize} members` },
+        { status: 400 },
+      )
+    }
+
+    if (members.some(m => typeof m !== 'string' || !/^\d{8}$/.test(m))) {
+      return NextResponse.json(
+      { error: 'Each member must be a valid roll number' },
+      { status: 400 },
+      )
+    }
+
+    const memberIds = await Promise.all(members.map(async rollNumber => {
+      const q = await payload.find({
+        collection: 'users',
+        where: {
+          rollNumber: {
+            equals: rollNumber,
+          }
+        },
+        select: {},
+        limit: 1
+      })
+      
+      return q.totalDocs > 0 ? q.docs[0].id : null
+    }))
+
+    for (const userIdx in memberIds) {
+      if (!memberIds[userIdx]) {
+        return NextResponse.json(
+          { error: `No user found with roll number ${members[userIdx]}` },
+          { status: 400 },
+        )
+      }
+    }
+
+    const existingRegistrations = await payload.find({
+      collection: 'registrations',
+      where: {
+        event: {
+          equals: eventId,
+        },
+        'members.user': {
+          in: memberIds,
+        },
+      },
+      select: {
+        members: true
+      }
+    })
+
+    if (existingRegistrations.totalDocs > 0) {
+      const registeredMembers = existingRegistrations.docs.flatMap(reg => 
+        reg.members.map(member => typeof member.user === 'string' ? member.user : member.user.rollNumber)
+      ) as string[]
+
+      return NextResponse.json(
+        { error: `Some team members are already registered: ${registeredMembers.filter(r => members.includes(r)).join(', ')}` },
+        { status: 400 },
+      )
+    }
+
+    // Create registration with team members
     await payload.create({
       collection: 'registrations',
       data: {
         user: session.user.id,
         event: eventId,
+        members: memberIds.map(id => ({ user: id! })),
       }
     })
 
@@ -172,6 +273,8 @@ export const DELETE = async (
       collection: 'registrations',
       id: registration.docs[0].id,
     })
+
+    revalidateTag('event-'+eventId)
 
     return NextResponse.json(
       { data: false },

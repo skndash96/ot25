@@ -42,6 +42,18 @@ export const Events: CollectionConfig = {
       required: true,
     },
     {
+      name: 'teamSize',
+      type: 'number',
+      min: 1,
+      required: true,
+      defaultValue: 1
+    },
+    {
+      name: 'whatsappLink',
+      type: 'text',
+      required: false,
+    },
+    {
       name: 'date',
       type: 'richText'
     },
