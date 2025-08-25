@@ -146,6 +146,11 @@ export default function EventPage({ event }: { event: Event }) {
   }, [userId, event.id])
 
   const handleRegistration = async (members: string[]) => {
+    if (!userId) {
+      toast.error('You must be logged in to register')
+      return
+    }
+
     setIsLoading(true)
     try {
       const response = await fetch(`/api/registrations/${event.id}`, {
@@ -294,7 +299,7 @@ export default function EventPage({ event }: { event: Event }) {
               </div>
             ) : (
               <button
-                disabled={hasRegistered === undefined || event.isRegistrationClosed || !userId}
+                disabled={hasRegistered === undefined || event.isRegistrationClosed || false}
                 onClick={() => setShowModal(true)}
                 className="w-full py-4 px-6 rounded-xl font-semibold text-lg transition-all duration-200 disabled:bg-neutral-600 disabled:text-neutral-400 disabled:cursor-not-allowed bg-amber-400 hover:bg-amber-500 text-neutral-900 shadow-lg hover:shadow-amber-400/25"
               >
