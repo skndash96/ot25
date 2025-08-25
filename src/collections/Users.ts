@@ -10,7 +10,7 @@ export const Users: CollectionConfig = {
     create: noAccess
   },
   admin: {
-    useAsTitle: 'rollNumber',
+    useAsTitle: 'name',
   },
   fields: [
     {

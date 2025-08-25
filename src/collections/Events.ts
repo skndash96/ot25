@@ -10,6 +10,9 @@ export const Events: CollectionConfig = {
     delete: admins,
     create: admins,
   },
+  admin: {
+    useAsTitle: 'title'
+  },
   fields: [
     {
       name: 'title',
