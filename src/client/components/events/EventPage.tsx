@@ -128,6 +128,7 @@ export default function EventPage({ event }: { event: Event }) {
 
   useEffect(() => {
     if (!userId) {
+      setHasRegistered(false)
       return
     }
 
@@ -303,7 +304,9 @@ export default function EventPage({ event }: { event: Event }) {
                 onClick={() => setShowModal(true)}
                 className="w-full py-4 px-6 rounded-xl font-semibold text-lg transition-all duration-200 disabled:bg-neutral-600 disabled:text-neutral-400 disabled:cursor-not-allowed bg-amber-400 hover:bg-amber-500 text-neutral-900 shadow-lg hover:shadow-amber-400/25"
               >
-                {hasRegistered === undefined 
+                {!userId
+                  ? 'Please Log in'
+                  : hasRegistered === undefined 
                   ? 'Loading...' 
                   : event.isRegistrationClosed 
                     ? 'Registration Closed' 
