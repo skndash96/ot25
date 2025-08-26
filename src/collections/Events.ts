@@ -29,6 +29,11 @@ export const Events: CollectionConfig = {
       required: false,
     },
     {
+      name: 'gFormLink',
+      type: 'text',
+      required: false
+    },
+    {
       name: 'isPublic',
       type: 'checkbox',
       defaultValue: false,

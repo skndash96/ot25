@@ -17,6 +17,10 @@ export const Registrations: CollectionConfig = {
       required: true,
     },
     {
+      name: "teamName",
+      type: "text"
+    },
+    {
       name: 'members',
       type: 'array',
       minRows: 1,

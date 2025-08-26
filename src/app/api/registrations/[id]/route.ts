@@ -39,6 +39,7 @@ export const GET = async (
         },
       },
       select: {
+        teamName: true,
         members: true,
         createdAt: true
       },
@@ -77,7 +78,7 @@ export const POST = async (
   }
 
   try {
-    const { members } = await req.json()
+    const { teamName, members } = await req.json()
 
     if (!members || !Array.isArray(members) || members.length === 0) {
       return NextResponse.json(
@@ -87,6 +88,13 @@ export const POST = async (
     }
 
     const set = new Set(members)
+
+    if (set.size > 1 && !teamName) {
+      return NextResponse.json(
+        { error: 'Team name is required' },
+        { status: 400 },
+      )
+    }
 
     if (set.size !== members.length) {
       return NextResponse.json(
@@ -211,6 +219,7 @@ export const POST = async (
       data: {
         user: session.user.id,
         event: eventId,
+        teamName: teamName || null,
         members: memberIds.map(id => ({ user: id! })),
       }
     })

@@ -196,6 +196,7 @@ export interface Event {
   id: string;
   title: string;
   thumbnail?: (string | null) | Media;
+  gFormLink?: string | null;
   isPublic?: boolean | null;
   takeRegistrations?: boolean | null;
   isRegistrationClosed?: boolean | null;
@@ -264,6 +265,7 @@ export interface Event {
 export interface Registration {
   id: string;
   event: string | Event;
+  teamName?: string | null;
   members: {
     user: string | User;
     id?: string | null;
@@ -446,6 +448,7 @@ export interface MediaSelect<T extends boolean = true> {
 export interface EventsSelect<T extends boolean = true> {
   title?: T;
   thumbnail?: T;
+  gFormLink?: T;
   isPublic?: T;
   takeRegistrations?: T;
   isRegistrationClosed?: T;
@@ -467,6 +470,7 @@ export interface EventsSelect<T extends boolean = true> {
  */
 export interface RegistrationsSelect<T extends boolean = true> {
   event?: T;
+  teamName?: T;
   members?:
     | T
     | {
