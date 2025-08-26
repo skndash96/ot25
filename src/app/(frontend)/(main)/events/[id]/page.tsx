@@ -13,7 +13,11 @@ const getEvent = async (id: string) => {
     throw new Error('Failed to fetch data')
   }
 
-  return res.json() as Promise<Event>
+  const event = await res.json() as Event
+
+  delete event.registrations
+
+  return event
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {

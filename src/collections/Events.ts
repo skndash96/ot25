@@ -95,6 +95,7 @@ export const Events: CollectionConfig = {
       collection: 'registrations',
       on: 'event',
       hasMany: true,
+      defaultLimit: 500,
       admin: {
         allowCreate: false,
       },

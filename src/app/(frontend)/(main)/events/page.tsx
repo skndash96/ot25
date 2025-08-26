@@ -27,8 +27,13 @@ export default async function EventsPage() {
       limit: 100
     })
 
+    const mappedEvents = events.map(event => {
+      delete event.registrations
+      return event
+    })
+
     return (
-      <EventsList events={events} />
+      <EventsList events={mappedEvents} />
     )
   } catch (e) {
     console.error('Error fetching events:', e)
