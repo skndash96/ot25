@@ -306,6 +306,8 @@ export default function EventPage({ event }: { event: Event }) {
               >
                 {!userId
                   ? 'Please Log in'
+                  : event.takeRegistrations === false
+                  ? 'On-spot Entries Only'
                   : hasRegistered === undefined 
                   ? 'Loading...' 
                   : event.isRegistrationClosed 

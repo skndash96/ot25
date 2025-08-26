@@ -34,6 +34,11 @@ export const Events: CollectionConfig = {
       defaultValue: false,
     },
     {
+      name: 'takeRegistrations',
+      type: 'checkbox',
+      defaultValue: true,
+    },
+    {
       name: 'isRegistrationClosed',
       type: 'checkbox',
       defaultValue: false,

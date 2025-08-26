@@ -197,6 +197,7 @@ export interface Event {
   title: string;
   thumbnail?: (string | null) | Media;
   isPublic?: boolean | null;
+  takeRegistrations?: boolean | null;
   isRegistrationClosed?: boolean | null;
   type: 'Guest Lecture' | 'Proshow' | 'Workshop' | 'Event' | 'Other';
   teamSize: number;
@@ -446,6 +447,7 @@ export interface EventsSelect<T extends boolean = true> {
   title?: T;
   thumbnail?: T;
   isPublic?: T;
+  takeRegistrations?: T;
   isRegistrationClosed?: T;
   type?: T;
   teamSize?: T;
