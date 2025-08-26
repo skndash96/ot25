@@ -47,6 +47,7 @@ export const GET = async (
     })
 
     const registration = registrations.totalDocs > 0 ? {
+      teamName: registrations.docs[0].teamName,
       members: registrations.docs[0].members.map(m => m.user),
     } : null
 
