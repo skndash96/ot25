@@ -156,7 +156,7 @@ export default function EventPage({ event }: { event: Event }) {
         return res.json()
       })
       .then(({ data }) => {
-        setHasRegistered(data.teamName)
+        setHasRegistered(data?.teamName)
       })
       .catch((err) => {
         toast.error(`Error fetching registration`)
