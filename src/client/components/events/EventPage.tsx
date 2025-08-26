@@ -140,13 +140,14 @@ function RegistrationModal({
 export default function EventPage({ event }: { event: Event }) {
   const { data: session } = useSession()
   const userId = useMemo(() => session?.user.id, [session])
-  const [hasRegistered, setHasRegistered] = useState<string | undefined>()
+  const [teamName, setTeamName] = useState('')
+  const [registrationState, setRegistrationState] = useState<'loading' | 'registered' | 'not_registered'>('loading')
   const [showModal, setShowModal] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     if (!userId) {
-      setHasRegistered(undefined)
+      setRegistrationState('loading')
       return
     }
 
@@ -156,7 +157,13 @@ export default function EventPage({ event }: { event: Event }) {
         return res.json()
       })
       .then(({ data }) => {
-        setHasRegistered(data?.teamName)
+        if (!data) {
+          setRegistrationState('not_registered')
+          return
+        } else {
+          setRegistrationState('registered')
+          setTeamName(data.teamName || '')
+        }
       })
       .catch((err) => {
         toast.error(`Error fetching registration`)
@@ -190,7 +197,8 @@ export default function EventPage({ event }: { event: Event }) {
         return
       }
 
-      setHasRegistered(json.teamName || 'registered')
+      setRegistrationState('registered')
+      setTeamName(json.teamName || '')
       setShowModal(false)
 
       toast.success('Successfully registered for the event!')
@@ -212,7 +220,8 @@ export default function EventPage({ event }: { event: Event }) {
         throw new Error('Failed to unregister from event')
       }
 
-      setHasRegistered(undefined)
+      setRegistrationState('not_registered')
+      setTeamName('')
       toast.success('Successfully unregistered from the event!')
     } catch (error) {
       toast.error('Error unregistering from the event')
@@ -294,12 +303,12 @@ export default function EventPage({ event }: { event: Event }) {
               </div>
             </div>
 
-            {hasRegistered ? (
+            {registrationState === 'registered' ? (
               <div className="mt-4 text-center space-y-4">
                 <div className="inline-flex items-center gap-2 text-amber-400 bg-amber-400/10 px-4 py-2 rounded-full">
                   <CheckCircle className="w-5 h-5" />
                   <span className="font-medium text-xl">
-                    You&apos;re registered {hasRegistered === 'registered' ? '' : `'${hasRegistered}'`}!
+                    You&apos;re registered {teamName ? `as ${teamName}` : ''}!
                   </span>
                 </div>
 
@@ -327,7 +336,7 @@ export default function EventPage({ event }: { event: Event }) {
             ) : (
               <>
                 <button
-                  disabled={hasRegistered === undefined || event.isRegistrationClosed || !userId}
+                  disabled={registrationState === 'loading' || event.isRegistrationClosed || !userId}
                   onClick={() => setShowModal(true)}
                   className="w-full py-4 px-6 rounded-xl font-semibold text-lg transition-all duration-200 disabled:bg-neutral-600 disabled:text-neutral-400 disabled:cursor-not-allowed bg-amber-400 hover:bg-amber-500 text-neutral-900 shadow-lg hover:shadow-amber-400/25"
                 >
@@ -335,7 +344,7 @@ export default function EventPage({ event }: { event: Event }) {
                     ? 'Please Log in'
                     : event.takeRegistrations === false
                       ? 'On-spot Entries Only'
-                      : hasRegistered === undefined
+                      : registrationState === 'loading'
                         ? 'Loading...'
                         : event.isRegistrationClosed
                           ? 'Registration Closed'
@@ -347,9 +356,9 @@ export default function EventPage({ event }: { event: Event }) {
                     target="_blank"
                     rel="nofollow"
                     href={event.gFormLink}
-                    className="block w-fit ml-auto underline"
+                    className="block font-sans w-fit ml-auto underline text-amber-200"
                   >
-                    B.Sc / B.Ed Student or trouble registering?
+                    For B.Sc / B.Ed Students, trouble registering?
                   </Link>
                 )}
               </>
